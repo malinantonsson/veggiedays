@@ -8,7 +8,7 @@ const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
 
 const PATHS = {
-    app: path.join(__dirname, 'javascript', 'app'),
+    app: path.join(__dirname, 'javascript', 'index'),
     build: path.join(__dirname, 'public', 'build'),
     public: path.join(__dirname, 'public'),
 };
@@ -23,7 +23,7 @@ var commonConfig = merge([
         output: {
             path: PATHS.build,
             publicPath: '/public/build/',
-            filename: '[name].js',
+            filename: 'app.js',
         },
         plugins: [
             // new webpack.optimize.CommonsChunkPlugin({
