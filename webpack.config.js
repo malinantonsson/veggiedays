@@ -64,7 +64,7 @@ const developmentConfig = merge([
 const productionConfig = merge([
     {
         output: {
-            filename: '[name].[chunkhash:8].js',
+            filename: 'app.[chunkhash:8].js',
         },
         plugins: [
             new CleanWebpackPlugin([PATHS.build], {
