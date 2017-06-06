@@ -8,7 +8,7 @@ const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
 
 const PATHS = {
-    app: path.join(__dirname, 'javascript', 'app'),
+    app: path.join(__dirname, 'javascript', 'index'),
     build: path.join(__dirname, 'public', 'build'),
     public: path.join(__dirname, 'public'),
 };
@@ -23,7 +23,7 @@ var commonConfig = merge([
         output: {
             path: PATHS.build,
             publicPath: '/public/build/',
-            filename: '[name].js',
+            filename: 'app.js',
         },
         plugins: [
             // new webpack.optimize.CommonsChunkPlugin({
@@ -50,7 +50,6 @@ var commonConfig = merge([
         '__DEV__': !IS_PRODUCTION,
     }),
     parts.lintStyles(),
-    parts.lintJavaScript({ include: PATHS.app }),
     parts.loadJavaScript({ isDev: !IS_PRODUCTION, exclude: [/node_modules/, /vendor/] }),
 ]);
 
@@ -64,7 +63,7 @@ const developmentConfig = merge([
 const productionConfig = merge([
     {
         output: {
-            filename: '[name].[chunkhash:8].js',
+            filename: 'app.[chunkhash:8].js',
         },
         plugins: [
             new CleanWebpackPlugin([PATHS.build], {
