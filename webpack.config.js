@@ -50,7 +50,6 @@ var commonConfig = merge([
         '__DEV__': !IS_PRODUCTION,
     }),
     parts.lintStyles(),
-    parts.lintJavaScript({ include: PATHS.app }),
     parts.loadJavaScript({ isDev: !IS_PRODUCTION, exclude: [/node_modules/, /vendor/] }),
 ]);
 

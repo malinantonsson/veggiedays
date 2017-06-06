@@ -1,10 +1,19 @@
 // import '../styles/app';
 
-// Styles are imported via JS bundles
-//import '../styles/demo';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
-// __DEV__ is a global boolean that is set by Webpack
-// This is good to use if you want exclude some JS from
-// the production build, e.g. console statements
-//__DEV__ && console.log('Zone boilerplate\n================\nThis message is only viewable in the development build');
-console.log('hello');
+const APP_CONTAINER = document.querySelector('.app-container');
+
+class App extends Component {
+  render() {
+    return (
+      <div>This is my app</div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <App />
+  , APP_CONTAINER
+);
