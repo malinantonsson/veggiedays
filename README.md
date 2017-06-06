@@ -97,17 +97,3 @@ Sass and JavaScript will be processed and minified. CSS is extracted into separa
 *Run (in this directory):*
 
     yarn run build --production
-
-## References
-
-* [Zone CSS style guide](https://zonecode.codebasehq.com/projects/zone-tech-documentation/notebook/Zone%20CSS%20Style%20Guide.md) - for Zone CSS best practice and standards - [View default linting rules](https://github.com/zone/stylelint-config-zone/blob/master/index.js)
-* [Zone JavaScript style guide](https://zonecode.codebasehq.com/projects/zone-tech-documentation/notebook/JS%20Style%20Guide.md) - for Zone JavaScript best practice and standards - [View default linting rules](https://github.com/zone/eslint-config-zone/blob/master/index.js)
-
-## Editor plugins
-
-### Atom
-
-* [StyleLint - CSS/Sass linting](https://atom.io/packages/linter-stylelint)
-* [ESLint - JavaScript linting](https://atom.io/packages/linter-eslint)
-* [EditorConfig - Consistent editor config](https://atom.io/packages/editorconfig)
-* [Pigments - Displays colours in real time](https://atom.io/packages/pigments)
