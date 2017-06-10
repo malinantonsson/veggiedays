@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Card from './card';
+import LatestRecipies from '../containers/recipes_latest';
+
 import SearchBar from '../containers/search-bar';
 
 export default class App extends Component {
@@ -9,11 +10,8 @@ export default class App extends Component {
         <h1>What are you looking for?</h1>
         <SearchBar />
 
-        <div className="cards featured-cards">
-          <Card />
-          <Card />
-          <Card />
-        </div>
+        <h2>Latest recipes</h2>
+        <LatestRecipies />
       </div>
     );
   }
