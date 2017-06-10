@@ -18,7 +18,7 @@ export class fetchLatestRecipes extends Component {
     const orderedRecipes = _.orderBy(_.map(this.props.recipes[0], (recipe) => recipe), ['date'], ['desc']);
     return orderedRecipes.map((recipe, key) => {
       return (
-        <Card key={key} title={recipe.title}/>
+        <Card key={key} title={recipe.title} slug={recipe.slug}/>
       );
     });
   }
