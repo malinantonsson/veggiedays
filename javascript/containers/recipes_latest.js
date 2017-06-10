@@ -2,18 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { fetchRecipes } from '../actions';
+import { fetchLastThreeRecipes } from '../actions';
 import Card from '../components/card';
 
 export class fetchLatestRecipes extends Component {
   //called as soon as the component shows up in the DOM
 	componentDidMount() {
-		this.props.fetchRecipes();
+		this.props.fetchLastThreeRecipes();
 	}
 
   renderRecipes() {
-    return _.map(this.props.recipes[0], (recipe, key) => {
-      console.log(recipe, key);
+    //first turn the objects into an array so we can iterate over it
+    //then sort by date so the latest post comes first
+    //then return the markup
+    const orderedRecipes = _.orderBy(_.map(this.props.recipes[0], (recipe) => recipe), ['date'], ['desc']);
+    return orderedRecipes.map((recipe, key) => {
       return (
         <Card key={key} title={recipe.title}/>
       );
@@ -21,7 +24,6 @@ export class fetchLatestRecipes extends Component {
   }
 
   render() {
-    console.log(this.props.recipes);
     if(this.props.recipes.length === 0) {
       return <div>Loading...</div>
     }
@@ -40,4 +42,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, { fetchRecipes })(fetchLatestRecipes);
+export default connect(mapStateToProps, { fetchLastThreeRecipes })(fetchLatestRecipes);

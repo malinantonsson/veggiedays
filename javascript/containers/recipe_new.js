@@ -58,6 +58,7 @@ class RecipeNew extends Component {
   }
 
 	onSubmit(values) {
+    values.date = Date.now();
 		this.props.createRecipe(values, () => {
 		    this.props.history.push('/');
 		});
