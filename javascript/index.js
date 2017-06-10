@@ -15,6 +15,7 @@ import reducers from './reducers';
 import App from './components/app';
 import Header from './components/header';
 import RecipeNew from './containers/recipe_new';
+import RecipeShow from './containers/recipe_show';
 const APP_CONTAINER = document.querySelector('.app-container');
 
 
@@ -26,7 +27,8 @@ ReactDOM.render(
       <div className="wrapper">
         <Header />
         <Switch>
-	    		<Route path="/recipe/new" component={RecipeNew} />
+          <Route path="/recipe/new" component={RecipeNew} />
+          <Route path="/recipe/:slug" component={RecipeShow} />
 	    		<Route path="/" component={App} />
 	    	</Switch>
       </div>
