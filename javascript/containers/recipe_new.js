@@ -111,16 +111,11 @@ class RecipeNew extends Component {
 
 //validate the form & add it to the reduxForm helper as an option called validate
 function validate(values) {
-  console.log('validae');
 	const errors = {};
 
 	//Validate the pinpit from the 'values' object
 	if(!values.title) {
 		errors.title = "Enter a title!";
-	}
-
-	if(!values.categories) {
-		errors.categories = "Enter a category!";
 	}
 
 	// if(!values.content) {
