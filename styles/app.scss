@@ -1,5 +1,12 @@
-@import '/globals/images';
-@import '/components/card';
+@import '/utils/__import';
+@import '/mixins/rem';
+@import '/utils/images';
+@import '/globals/header';
+@import '/components/__import';
+
+html {
+    font-size: 100%;
+}
 
 body {
     background: white;
