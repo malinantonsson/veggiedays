@@ -3,40 +3,89 @@ import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createRecipe } from '../actions';
+import { Storage } from '../firebase-config';
 
 class RecipeNew extends Component {
   constructor(props) {
     super(props);
 
     this.renderField = this.renderField.bind(this);
-    this.renderItem = this.renderItem.bind(this);
-    this.renderFormat = this.renderFormat.bind(this);
+    this.handleImgChange = this.handleImgChange.bind(this);
+
+    this.renderImgField = this.renderImgField.bind(this);
+
+    this.state = { img : ''};
+
   }
 
-  renderFormat(field) {
-    switch (field.field) {
-      case 'input':
-        return (
-            <input
-              type={field.type}
-              className="form-control"
-              {...field.input}
-            />
-        );
+  generateSlug(values) {
+    return values.title.replace(' ', '-');
+  }
 
-        break;
-      default:
+	onSubmit(values) {
+    const props = this.props;
+    values.date = Date.now();
+    values.slug = this.generateSlug(values);
 
+
+    var file = this.state.img;
+    //if there is a file
+    if(file.name) {
+      var storageRef = Storage.ref();
+
+      // Create the file metadata
+      var metadata = {
+        contentType: file.type
+      };
+
+      // Upload file and metadata
+      var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
+
+      // Register three observers:
+      // 1. 'state_changed' observer, called any time the state changes
+      // 2. Error observer, called on failure
+      // 3. Completion observer, called on successful completion
+      uploadTask.on('state_changed', function(snapshot){
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running');
+            break;
+        }
+      }, function(error) {
+        // Handle unsuccessful uploads
+      }, function() {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        var downloadURL = uploadTask.snapshot.downloadURL;
+        values.imgUrl = downloadURL;
+
+    		props.createRecipe(values, () => {
+    		    props.history.push('/');
+    		});
+      });
+
+    } else {
+      //else send value as is
+      this.props.createRecipe(values, () => {
+  		    this.props.history.push('/');
+  		});
     }
-  }
+	}
 
-  renderItem(field) {
+  renderField(field) {
 		const { meta: { touched, error } } = field;
 		const className = `form-group ${touched && error ? 'has-danger' : ''}`;
 		return (
 			<div className={className}>
 				<label>{field.label}</label>
-				{this.renderFormat(field)}
+				<input
+					type={field.type ? field.type : "text"}
+					className="form-control"
+					{...field.input}
+				/>
 				<div className="text-help">
 					{touched ? error : ''}
 				</div>
@@ -44,62 +93,62 @@ class RecipeNew extends Component {
 		);
 	}
 
-  renderField(data) {
-    return (
-      <Field
-        label={data.label}
-        name={data.name}
-        field={data.field}
-        component={this.renderItem}
-        type={data.type}
-        key={data.name}
-      />
-    );
+  handleImgChange(evt) {
+      this.setState({ img: evt.target.files[0]});
   }
 
-	onSubmit(values) {
-    values.date = Date.now();
-		this.props.createRecipe(values, () => {
-		    this.props.history.push('/');
-		});
+  renderImgField({ input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning } } = field) {
+		const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<input
+          name="img"
+					type={type ? type : "text"}
+					className="form-control"
+          onChange={(evt) => this.handleImgChange(evt)}
+				/>
+				<div className="text-help">
+					{touched ? error : ''}
+				</div>
+			</div>
+		);
 	}
 
   render() {
-    const formData = [
-      {
-        label: 'Title',
-        name: 'title',
-        field: 'input',
-        type: 'text',
-        required: true,
-        error: 'Please enter a title',
-        description: 'This is the title of the recipe'
-      },
-      {
-        label: 'Source',
-        name: 'source',
-        field: 'input',
-        type: 'url',
-        required: false,
-        description: 'Was this recipe created by someone else? If so, please give credit by adding a url'
-      },
-      {
-        label: 'Image',
-        name: 'image',
-        field: 'input',
-        type: 'file',
-        required: true,
-        error: 'Please add an image',
-        description: 'Add an image'
-      }
-    ]
 
     const { handleSubmit } = this.props;
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
-        {formData.map(this.renderField)}
+        <Field
+          label="Title"
+          name="title"
+          component={this.renderField}
+          type="text"
+        />
+
+        <Field
+          label="Source"
+          name="source"
+          component={this.renderField}
+          type="url"
+        />
+
+        <Field
+          label="Post Content"
+          name="content"
+          component={this.renderField}
+        />
+
+        <Field
+          label="Image"
+          name="image"
+          type="file"
+          component={this.renderImgField}
+        />
 
 				<button type="submit" className="btn btn-primary">Submit</button>
 				<Link to="/" className="btn btn-danger">Cancel</Link>
