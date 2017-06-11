@@ -12,8 +12,6 @@ export class RecipeShow extends Component {
 	}
 
   render() {
-    console.log(this.props.recipe);
-
 		const { recipe } = this.props;
     if(!recipe) return <div>Loading...</div>
 
@@ -25,12 +23,6 @@ export class RecipeShow extends Component {
 }
 
 function mapStateToProps({ recipes }, ownProps) {
-  //console.log(ownProps);
-  //console.log(recipes);
-  //if(recipes.length == 0)
-  //const recipe = _.map(recipes[0], recipe => recipe);
-  //console.log(recipes);
-
 	//pull off the recipe we need
 	return { recipe: recipes[ownProps.match.params.slug]};
 }

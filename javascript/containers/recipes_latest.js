@@ -12,13 +12,11 @@ export class fetchLatestRecipes extends Component {
 	}
 
   renderRecipes() {
-    //first turn the objects into an array so we can iterate over it
-    //then sort by date so the latest post comes first
-    //then return the markup
-    const orderedRecipes = _.orderBy(_.map(this.props.recipes[0], (recipe) => recipe), ['date'], ['desc']);
-    return orderedRecipes.map((recipe, key) => {
+    //sort by date so the latest post comes first
+		const orderedRecipes = _.orderBy(this.props.recipes, ['date'], ['desc']);
+    return orderedRecipes.map((recipe) => {
       return (
-        <Card key={key} title={recipe.title} slug={recipe.slug}/>
+        <Card key={recipe.date} title={recipe.title} slug={recipe.slug}/>
       );
     });
   }
