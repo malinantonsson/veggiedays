@@ -9,34 +9,42 @@ class RecipeNew extends Component {
     super(props);
 
     this.renderField = this.renderField.bind(this);
-    this.renderItem = this.renderItem.bind(this);
-    this.renderFormat = this.renderFormat.bind(this);
+    this.handleImgChange = this.handleImgChange.bind(this);
+
+    //this.handleFile = this.handleFile.bind(this);
+
+    this.renderImgField = this.renderImgField.bind(this);
+
+    this.state = { img : ''};
+
   }
 
-  renderFormat(field) {
-    switch (field.field) {
-      case 'input':
-        return (
-            <input
-              type={field.type}
-              className="form-control"
-              {...field.input}
-            />
-        );
-
-        break;
-      default:
-
-    }
+  generateSlug(values) {
+    return values.title.replace(' ', '-');
   }
 
-  renderItem(field) {
+	onSubmit(values) {
+
+    console.log(values);
+    console.log(this.state);
+    values.date = Date.now();
+    values.slug = this.generateSlug(values);
+		// this.props.createRecipe(values, () => {
+		//     this.props.history.push('/');
+		// });
+	}
+
+  renderField(field) {
 		const { meta: { touched, error } } = field;
 		const className = `form-group ${touched && error ? 'has-danger' : ''}`;
 		return (
 			<div className={className}>
 				<label>{field.label}</label>
-				{this.renderFormat(field)}
+				<input
+					type={field.type ? field.type : "text"}
+					className="form-control"
+					{...field.input}
+				/>
 				<div className="text-help">
 					{touched ? error : ''}
 				</div>
@@ -44,62 +52,77 @@ class RecipeNew extends Component {
 		);
 	}
 
-  renderField(data) {
-    return (
-      <Field
-        label={data.label}
-        name={data.name}
-        field={data.field}
-        component={this.renderItem}
-        type={data.type}
-        key={data.name}
-      />
-    );
+  handleImgChange(evt) {
+      this.setState({ img: evt.target.files[0]});
+      console.log(evt.target.files);
+      //let formData = new FormData();
+      //formData.append('name', 'malin');
+      //console.log(formData);
+      //return evt.target.files[0];
   }
 
-	onSubmit(values) {
-    values.date = Date.now();
-		this.props.createRecipe(values, () => {
-		    this.props.history.push('/');
-		});
+  // const FileInput = (
+  //   {
+  //     input:{value: omitValue, …inputProps},
+  //     label, type,
+  //     meta: { touched, error, warning } }) => (
+
+  renderImgField({ input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning } } = field) {
+  //  console.log(field);
+		//const { meta: { touched, error } } = field;
+    //const  { input:{value: omitValue, ...inputProps} } = field;
+		const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<input
+          name="img"
+					type={type ? type : "text"}
+					className="form-control"
+          onChange={(evt) => this.handleImgChange(evt)}
+				/>
+				<div className="text-help">
+					{touched ? error : ''}
+				</div>
+			</div>
+		);
 	}
 
   render() {
-    const formData = [
-      {
-        label: 'Title',
-        name: 'title',
-        field: 'input',
-        type: 'text',
-        required: true,
-        error: 'Please enter a title',
-        description: 'This is the title of the recipe'
-      },
-      {
-        label: 'Source',
-        name: 'source',
-        field: 'input',
-        type: 'url',
-        required: false,
-        description: 'Was this recipe created by someone else? If so, please give credit by adding a url'
-      },
-      {
-        label: 'Image',
-        name: 'image',
-        field: 'input',
-        type: 'file',
-        required: true,
-        error: 'Please add an image',
-        description: 'Add an image'
-      }
-    ]
 
     const { handleSubmit } = this.props;
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
-        {formData.map(this.renderField)}
+        <Field
+          label="Title"
+          name="title"
+          component={this.renderField}
+          type="text"
+        />
+
+        <Field
+          label="Source"
+          name="source"
+          component={this.renderField}
+          type="url"
+        />
+
+        <Field
+          label="Post Content"
+          name="content"
+          component={this.renderField}
+        />
+
+        <Field
+          label="Image"
+          name="image"
+          type="file"
+          value="hey"
+          component={this.renderImgField}
+        />
 
 				<button type="submit" className="btn btn-primary">Submit</button>
 				<Link to="/" className="btn btn-danger">Cancel</Link>
