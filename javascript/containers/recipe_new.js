@@ -55,22 +55,9 @@ class RecipeNew extends Component {
   handleImgChange(evt) {
       this.setState({ img: evt.target.files[0]});
       console.log(evt.target.files);
-      //let formData = new FormData();
-      //formData.append('name', 'malin');
-      //console.log(formData);
-      //return evt.target.files[0];
   }
 
-  // const FileInput = (
-  //   {
-  //     input:{value: omitValue, …inputProps},
-  //     label, type,
-  //     meta: { touched, error, warning } }) => (
-
   renderImgField({ input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning } } = field) {
-  //  console.log(field);
-		//const { meta: { touched, error } } = field;
-    //const  { input:{value: omitValue, ...inputProps} } = field;
 		const className = `form-group ${touched && error ? 'has-danger' : ''}`;
 
 		return (
@@ -120,7 +107,6 @@ class RecipeNew extends Component {
           label="Image"
           name="image"
           type="file"
-          value="hey"
           component={this.renderImgField}
         />
 
