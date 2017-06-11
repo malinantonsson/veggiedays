@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createRecipe } from '../actions';
+import { Storage } from '../firebase-config';
 
 class RecipeNew extends Component {
   constructor(props) {
@@ -10,8 +11,6 @@ class RecipeNew extends Component {
 
     this.renderField = this.renderField.bind(this);
     this.handleImgChange = this.handleImgChange.bind(this);
-
-    //this.handleFile = this.handleFile.bind(this);
 
     this.renderImgField = this.renderImgField.bind(this);
 
@@ -24,14 +23,56 @@ class RecipeNew extends Component {
   }
 
 	onSubmit(values) {
-
-    console.log(values);
-    console.log(this.state);
+    const props = this.props;
     values.date = Date.now();
     values.slug = this.generateSlug(values);
-		// this.props.createRecipe(values, () => {
-		//     this.props.history.push('/');
-		// });
+
+
+    var file = this.state.img;
+    //if there is a file
+    if(file.name) {
+      var storageRef = Storage.ref();
+
+      // Create the file metadata
+      var metadata = {
+        contentType: file.type
+      };
+
+      // Upload file and metadata
+      var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
+
+      // Register three observers:
+      // 1. 'state_changed' observer, called any time the state changes
+      // 2. Error observer, called on failure
+      // 3. Completion observer, called on successful completion
+      uploadTask.on('state_changed', function(snapshot){
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running');
+            break;
+        }
+      }, function(error) {
+        // Handle unsuccessful uploads
+      }, function() {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        var downloadURL = uploadTask.snapshot.downloadURL;
+        values.imgUrl = downloadURL;
+
+    		props.createRecipe(values, () => {
+    		    props.history.push('/');
+    		});
+      });
+
+    } else {
+      //else send value as is
+      this.props.createRecipe(values, () => {
+  		    this.props.history.push('/');
+  		});
+    }
 	}
 
   renderField(field) {
@@ -54,7 +95,6 @@ class RecipeNew extends Component {
 
   handleImgChange(evt) {
       this.setState({ img: evt.target.files[0]});
-      console.log(evt.target.files);
   }
 
   renderImgField({ input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning } } = field) {
