@@ -1,0 +1,9 @@
+.recipe {
+    width: span(8);
+    margin: 0 auto;
+    padding: 0 $gutter;
+
+    &__title {
+        text-align: center;
+    }
+}

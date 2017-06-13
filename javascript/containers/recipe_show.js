@@ -19,7 +19,6 @@ export class RecipeShow extends Component {
         </div>
       );
     }
-    console.log(recipe);
   }
 
   render() {

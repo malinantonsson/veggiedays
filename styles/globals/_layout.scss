@@ -1,0 +1,6 @@
+.wrapper {
+    padding-left: $gutter;
+    padding-right: $gutter;
+
+    @include container;
+}
