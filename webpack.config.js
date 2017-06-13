@@ -49,7 +49,7 @@ var commonConfig = merge([
         'process.env.NODE_ENV': process.env.NODE_ENV || 'development',
         '__DEV__': !IS_PRODUCTION,
     }),
-    parts.lintStyles(),
+    //parts.lintStyles(),
     parts.loadJavaScript({ isDev: !IS_PRODUCTION, exclude: [/node_modules/, /vendor/] }),
 ]);
 
