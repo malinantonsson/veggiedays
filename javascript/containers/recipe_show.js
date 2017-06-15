@@ -37,6 +37,25 @@ export class RecipeShow extends Component {
     }
   }
 
+  renderIngredient(ingredients) {
+    return ingredients.map(function(ingredient){
+        return <li>{ingredient.content}</li>
+      }
+    );
+
+  }
+
+  renderIngredients() {
+    const recipe = this.props.recipe;
+    if(recipe.ingredients) {
+      return (
+        <ul className="ingredient__list">
+          { this.renderIngredient(recipe.ingredients)}
+        </ul>
+      );
+    }
+  }
+
   render() {
 		const { recipe } = this.props;
     if(!recipe) return <div>Loading...</div>
@@ -49,6 +68,8 @@ export class RecipeShow extends Component {
         <p className="recipe__description">
           {recipe.content}
         </p>
+
+        {this.renderIngredients()}
 
         { this.renderSource() }
       </div>

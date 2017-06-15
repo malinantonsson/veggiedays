@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createRecipe } from '../actions';
@@ -13,6 +13,7 @@ class RecipeNew extends Component {
     this.handleImgChange = this.handleImgChange.bind(this);
 
     this.renderImgField = this.renderImgField.bind(this);
+    this.renderIngredients = this.renderIngredients.bind(this);
 
     this.state = { img : ''};
 
@@ -26,8 +27,7 @@ class RecipeNew extends Component {
     const props = this.props;
     values.date = Date.now();
     values.slug = this.generateSlug(values);
-
-
+    
     var file = this.state.img;
     //if there is a file
     if(file.name) {
@@ -136,6 +136,32 @@ class RecipeNew extends Component {
     );
   }
 
+  renderIngredients({ fields, meta: { touched, error } }) {
+    return (
+      <ul>
+
+        {fields.map((ingredient, index) =>
+          <li key={index}>
+            <button
+              type="button"
+              title="Remove ingredient"
+              onClick={() => fields.remove(index)}>Remove</button>
+            <h4>ingredient #{index + 1}</h4>
+            <Field
+              name={`${ingredient}.content`}
+              type="text"
+              component={this.renderField}
+              label="ingredient"/>
+          </li>
+        )}
+        <li>
+          <button type="button" onClick={() => fields.push({})}>Add ingredient</button>
+          {touched && error && <span>{error}</span>}
+        </li>
+      </ul>
+    );
+  }
+
   render() {
 
     const { handleSubmit } = this.props;
@@ -162,6 +188,10 @@ class RecipeNew extends Component {
           name="content"
           component={this.renderTextField}
         />
+
+        <FieldArray
+          name="ingredients"
+          component={this.renderIngredients}/>
 
         <Field
           label="Image"
