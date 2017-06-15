@@ -11,11 +11,27 @@ export class RecipeShow extends Component {
 		this.props.fetchRecipe(slug);
 	}
 
-  renderImg(recipe) {
+  renderImg() {
+    const recipe = this.props.recipe;
+
     if(recipe.imgUrl) {
       return (
         <div className="recipe-img__wrapper">
           <img className="recipe__img" src={recipe.imgUrl} />
+        </div>
+      );
+    }
+  }
+
+  renderSource() {
+    const recipe = this.props.recipe;
+
+    if(recipe.source) {
+      return (
+        <div className="recipe__src">
+          <a href={recipe.source} className="recipe__src-link" target="_blank">
+            Source
+          </a>
         </div>
       );
     }
@@ -29,7 +45,12 @@ export class RecipeShow extends Component {
 
       <div className="recipe">
         <h1 className="recipe__title">{recipe.title}</h1>
-        {this.renderImg(recipe)}
+        {this.renderImg()}
+        <p className="recipe__description">
+          {recipe.content}
+        </p>
+
+        { this.renderSource() }
       </div>
     );
   }
