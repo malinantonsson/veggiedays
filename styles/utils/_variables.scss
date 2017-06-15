@@ -1,1 +1,28 @@
+/* Add Susy global settings */
+$susy: (
+    /* Tells Susy to use 12 columns */
+    columns: 12,
+    gutters: .25,
+    /* Tells Susy that the container has a max-width of 1000px */
+    container: 1000px,
+    /* Tells Susy to use border-box */
+    global-box-sizing: border-box
+);
+
+/* Makes border-box properties */
+@include border-box-sizing;
+
+$singleColMaxWidth: 600px;
+
 $gutter: 1rem;
+
+$light-gray: #f6f5f3;
+$mid-gray: #827e7a;
+$dark-gray: #334557;
+$white: #fff;
+
+$background-color: $light-gray;
+$background-color-content: $white;
+
+$copy-dark: $mid-gray;
+$heading-dark: $dark-gray;

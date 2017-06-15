@@ -1,0 +1,15 @@
+.recipe {
+    width: span(8);
+    margin: 0 auto;
+    padding: $gutter;
+    background-color: $background-color-content;
+    @include box-shadow();
+
+    &__title {
+        text-align: center;
+    }
+
+    &__src {
+      font-style: italic;
+    }
+}

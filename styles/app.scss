@@ -1,7 +1,8 @@
+@import '~susy/sass/susy';
 @import '/utils/__import';
-@import '/mixins/rem';
+@import '/mixins/__import';
 @import '/utils/images';
-@import '/globals/header';
+@import '/globals/__import';
 @import '/components/__import';
 
 html {
@@ -9,5 +10,6 @@ html {
 }
 
 body {
-    background: white;
+    background-color: $background-color;
+    color: $copy-dark;
 }

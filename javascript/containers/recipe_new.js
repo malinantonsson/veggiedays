@@ -52,9 +52,12 @@ class RecipeNew extends Component {
             break;
           case firebase.storage.TaskState.RUNNING: // or 'running'
             console.log('Upload is running');
+            //TODO:
+            //show loading sign
             break;
         }
       }, function(error) {
+        //TODO:
         // Handle unsuccessful uploads
       }, function() {
         // Handle successful uploads on complete
@@ -114,7 +117,24 @@ class RecipeNew extends Component {
 				</div>
 			</div>
 		);
-	}
+  }
+
+  renderTextField(field) {
+    const { meta: { touched, error } } = field;
+    const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+    return (
+      <div className={className}>
+        <label>{field.label}</label>
+        <textarea
+          className="form-control"
+          {...field.input}
+        ></textarea>
+        <div className="text-help">
+          {touched ? error : ''}
+        </div>
+      </div>
+    );
+  }
 
   render() {
 
@@ -138,9 +158,9 @@ class RecipeNew extends Component {
         />
 
         <Field
-          label="Post Content"
+          label="Description"
           name="content"
-          component={this.renderField}
+          component={this.renderTextField}
         />
 
         <Field
@@ -167,9 +187,9 @@ function validate(values) {
 		errors.title = "Enter a title!";
 	}
 
-	// if(!values.content) {
-	// 	errors.content = "Enter a content!";
-	// }
+	if(!values.content) {
+		errors.content = "Enter a content!";
+	}
 
 
 	//if errors is empty the form is valid, go and submit.
