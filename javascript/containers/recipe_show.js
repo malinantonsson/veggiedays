@@ -49,9 +49,12 @@ export class RecipeShow extends Component {
     const recipe = this.props.recipe;
     if(recipe.ingredients) {
       return (
-        <ul className="ingredient__list">
-          { this.renderIngredient(recipe.ingredients)}
-        </ul>
+        <div>
+          <h2 className="ingredients__heading">Ingredients</h2>
+          <ul className="ingredients__list">
+            { this.renderIngredient(recipe.ingredients)}
+          </ul>
+        </div>
       );
     }
   }
@@ -69,7 +72,7 @@ export class RecipeShow extends Component {
           {recipe.content}
         </p>
 
-        {this.renderIngredients()}
+        { this.renderIngredients() }
 
         { this.renderSource() }
       </div>
