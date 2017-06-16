@@ -29,6 +29,7 @@ ReactDOM.render(
         <main className="wrapper">
           <Switch>
               <Route path="/recipe/new" component={RecipeNew} />
+              <Route path="/recipe/edit/:slug" component={RecipeShow} />
               <Route path="/recipe/:slug" component={RecipeShow} />
     	    		<Route path="/" component={App} />
   	    	</Switch>
