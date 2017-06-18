@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import { onFormSubmit, renderField } from '../helpers/form';
+import { onFormSubmit, renderField, renderIngredients } from '../helpers/form';
 
 const form = reduxForm({
   form: 'ReduxFormTutorial',
@@ -15,11 +15,11 @@ const form = reduxForm({
 class ReduxFormTutorial extends Component {
   constructor(props) {
     super(props);
-    
+
     this.handleImgChange = this.handleImgChange.bind(this);
 
     this.renderImgField = this.renderImgField.bind(this);
-    this.renderIngredients = this.renderIngredients.bind(this);
+    //this.renderIngredients = this.renderIngredients.bind(this);
 
     this.postForm = this.postForm.bind(this);
 
@@ -82,31 +82,6 @@ class ReduxFormTutorial extends Component {
     );
   }
 
-  renderIngredients({ fields, meta: { touched, error } }) {
-    return (
-      <ul>
-
-        {fields.map((ingredient, index) =>
-          <li key={index}>
-            <button
-              type="button"
-              title="Remove ingredient"
-              onClick={() => fields.remove(index)}>Remove</button>
-            <h4>ingredient #{index + 1}</h4>
-            <Field
-              name={`${ingredient}.content`}
-              type="text"
-              component={ renderField }
-              label="ingredient"/>
-          </li>
-        )}
-        <li>
-          <button type="button" onClick={() => fields.push({})}>Add ingredient</button>
-          {touched && error && <span>{error}</span>}
-        </li>
-      </ul>
-    );
-  }
 
 
   render() {
@@ -138,7 +113,7 @@ class ReduxFormTutorial extends Component {
 
         <FieldArray
           name="ingredients"
-          component={this.renderIngredients}/>
+          component={ renderIngredients }/>
 
         <Field
           label="Image"

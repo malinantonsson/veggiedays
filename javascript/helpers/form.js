@@ -61,10 +61,7 @@ export function onFormSubmit(state, values, isNew, post) {
   }
 }
 
-
 export function renderField(field) {
-  console.log('hello');
-  console.log('field: ', field);
   const { meta: { touched, error } } = field;
   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
   return (
@@ -79,5 +76,31 @@ export function renderField(field) {
         {touched ? error : ''}
       </div>
     </div>
+  );
+}
+
+export function renderIngredients({ fields, meta: { touched, error } }) {
+  return (
+    <ul>
+
+      {fields.map((ingredient, index) =>
+        <li key={index}>
+          <button
+            type="button"
+            title="Remove ingredient"
+            onClick={() => fields.remove(index)}>Remove</button>
+          <h4>ingredient #{index + 1}</h4>
+          <Field
+            name={`${ingredient}.content`}
+            type="text"
+            component={ renderField }
+            label="ingredient"/>
+        </li>
+      )}
+      <li>
+        <button type="button" onClick={() => fields.push({})}>Add ingredient</button>
+        {touched && error && <span>{error}</span>}
+      </li>
+    </ul>
   );
 }
