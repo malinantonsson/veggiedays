@@ -38,8 +38,8 @@ export class RecipeShow extends Component {
   }
 
   renderIngredient(ingredients) {
-    return ingredients.map(function(ingredient){
-        return <li>{ingredient.content}</li>
+    return ingredients.map(function(ingredient, index){
+        return <li key={index}>{ingredient.content}</li>
       }
     );
 
