@@ -21,28 +21,9 @@ class ReduxFormTutorial extends Component {
     //get the id from the url
 		//if comes from the router definition
     const { slug } = this.props.match.params;
-		//this.props.fetchRecipe(slug);
-
-    const { fetchRecipe } = this.props;
-    console.log(fetchRecipe);
-    fetchRecipe(slug);
-    //const { slug } = this.props.match.params;
-
-    //this.handleInitialize();
+		this.props.fetchRecipe(slug);
   }
 
-  handleInitialize() {
-    console.log(this.props);
-    const initData = {
-      //"firstName": this.props.currentUser.firstName,
-      // "lastName": this.props.currentUser.lastName,
-      // "sex": this.props.currentUser.sex,
-      // "email": this.props.userEmail,
-      // "phoneNumber": this.props.currentUser.phoneNumber
-    };
-
-    //this.props.initialize(initData);
-  }
 
   handleFormSubmit(formProps) {
     this.props.submitFormAction(formProps);
@@ -56,10 +37,6 @@ class ReduxFormTutorial extends Component {
     return (
       <div>
         <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-
-        <div>
-          <button type="button" onClick={() => fetchRecipe(slug)}>Load Account</button>
-        </div>
 
           <label>First Name:</label>
           <Field name="title" type="text" component={renderField}/>
@@ -109,16 +86,18 @@ function validate(formProps) {
   return errors;
 }
 
-// function mapStateToProps(state, ownProps) {
-//   console.log(state);
-//   return {
-//     user: state.user,
-//     recipe: state.recipes[ownProps.match.params.slug],
-//     initialValues: state.recipes[ownProps.match.params.slug]
-//   };
-// }
+function mapStateToProps(state, ownProps) {
+  console.log(state);
+  return {
+    user: state.user,
+    recipe: state.recipes[ownProps.match.params.slug],
+    initialValues: state.recipes[ownProps.match.params.slug]
+  };
+}
 
+export default connect(mapStateToProps, actions)(form(ReduxFormTutorial));
 
-export default connect((state, ownProps) => ({
-    initialValues: state.recipes[ownProps.match.params.slug] // pull initial values from account reducer
-  }), actions)(form(ReduxFormTutorial));
+//
+// export default connect((state, ownProps) => ({
+//     initialValues: state.recipes[ownProps.match.params.slug] // pull initial values from account reducer
+//   }), actions)(form(ReduxFormTutorial));
