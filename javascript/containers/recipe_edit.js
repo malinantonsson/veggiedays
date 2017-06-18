@@ -1,73 +1,85 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+
+import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+
+import { onFormSubmit, renderField, renderIngredients, renderTextField, handleImgChange, renderImgField } from '../helpers/form';
 
 const form = reduxForm({
   form: 'ReduxFormTutorial',
   validate
 });
 
-const renderField = field => (
-    <div>
-      <input {...field.input}/>
-      {field.touched && field.error && <div className="error">{field.error}</div>}
-    </div>
-);
-
-
 class ReduxFormTutorial extends Component {
+  constructor(props) {
+    super(props);
+
+    this.postForm = this.postForm.bind(this);
+
+    this.state = { img : ''};
+  }
   componentDidMount() {
-    this.handleInitialize();
+    //get the id from the url
+		//if comes from the router definition
+    const { slug } = this.props.match.params;
+		this.props.fetchRecipe(slug);
   }
 
-  handleInitialize() {
-    const initData = {
-      "firstName": this.props.currentUser.firstName,
-      "lastName": this.props.currentUser.lastName,
-      "sex": this.props.currentUser.sex,
-      "email": this.props.userEmail,
-      "phoneNumber": this.props.currentUser.phoneNumber
-    };
-
-    this.props.initialize(initData);
+  postForm(values) {
+    this.props.editRecipe(values.firebaseKey, values, () => {
+        this.props.history.push(`/recipe/${values.slug}`);
+    });
   }
 
-  handleFormSubmit(formProps) {
-    this.props.submitFormAction(formProps);
-  }
-
+  onSubmit(values) {
+    onFormSubmit(this.state, values, false, this.postForm);
+	}
 
   render() {
     const { handleSubmit } = this.props;
 
 
     return (
-      <div>
-        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
-          <label>First Name:</label>
-          <Field name="firstName" type="text" component={renderField}/>
+        <Field
+          label="Title"
+          name="title"
+          component={ renderField }
+          type="text"
+        />
 
-          <label>Last Name:</label>
-          <Field name="lastName" type="text" component={renderField}/>
+        <Field
+          label="Source"
+          name="source"
+          component={ renderField }
+          type="url"
+        />
 
-          <label>Gender:</label>
-          <Field name="sex" component="select">
-            <option></option>
-            <option name="Male">Male</option>
-            <option name="Female">Female</option>
-          </Field>
+        <Field
+          label="Description"
+          name="content"
+          component={ renderTextField }
+        />
 
-          <label>Email:</label>
-          <Field name="email" type="email" component={renderField} />
+        <FieldArray
+          name="ingredients"
+          component={ renderIngredients }/>
 
-          <label>Phone:</label>
-          <Field name="phoneNumber" type="tel" component={renderField}/>
+        <Field
+          label="Image"
+          name="image"
+          type="file"
+          that={this}
+          component={ renderImgField }
+        />
 
-          <button action="submit">Save changes</button>
-        </form>
-      </div>
+				<button type="submit" className="btn btn-primary">Submit</button>
+				<Link to="/" className="btn btn-danger">Cancel</Link>
+
+			</form>
     );
   }
 }
@@ -75,29 +87,23 @@ class ReduxFormTutorial extends Component {
 function validate(formProps) {
   const errors = {};
 
-  if (!formProps.firstName) {
-    errors.firstName = 'Please enter a first name';
+  if (!formProps.title) {
+    errors.title = "Enter a title!";
   }
 
-  if (!formProps.lastName) {
-    errors.lastName = 'Please enter a last name';
-  }
-
-  if (!formProps.email) {
-    errors.email = 'Please enter an email';
-  }
-
-  if (!formProps.phoneNumber) {
-    errors.phoneNumber = 'Please enter a phone number'
+  if (!formProps.content) {
+		errors.content = "Enter a content!";
   }
 
   return errors;
 }
 
-function mapStateToProps(state) {
-  console.log(state);
+function mapStateToProps(state, ownProps) {
+  //console.log(state);
   return {
-    user: state.user
+    user: state.user,
+    recipe: state.recipes[ownProps.match.params.slug],
+    initialValues: state.recipes[ownProps.match.params.slug]
   };
 }
 
