@@ -4,25 +4,18 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import { onFormSubmit } from '../helpers/form';
+import { onFormSubmit, renderField } from '../helpers/form';
 
 const form = reduxForm({
   form: 'ReduxFormTutorial',
   validate
 });
 
-const renderField = field => (
-    <div>
-      <input {...field.input}/>
-      {field.touched && field.error && <div className="error">{field.error}</div>}
-    </div>
-);
-
 
 class ReduxFormTutorial extends Component {
   constructor(props) {
     super(props);
-    this.renderField = this.renderField.bind(this);
+    
     this.handleImgChange = this.handleImgChange.bind(this);
 
     this.renderImgField = this.renderImgField.bind(this);
@@ -46,28 +39,7 @@ class ReduxFormTutorial extends Component {
   }
 
   onSubmit(values) {
-    console.log(values);
-
     onFormSubmit(this.state, values, false, this.postForm);
-	}
-
-  renderField(field) {
-    console.log('render field');
-		const { meta: { touched, error } } = field;
-		const className = `form-group ${touched && error ? 'has-danger' : ''}`;
-		return (
-			<div className={className}>
-				<label>{field.label}</label>
-				<input
-					type={field.type ? field.type : "text"}
-					className="form-control"
-					{...field.input}
-				/>
-				<div className="text-help">
-					{touched ? error : ''}
-				</div>
-			</div>
-		);
 	}
 
   handleImgChange(evt) {
@@ -124,7 +96,7 @@ class ReduxFormTutorial extends Component {
             <Field
               name={`${ingredient}.content`}
               type="text"
-              component={this.renderField}
+              component={ renderField }
               label="ingredient"/>
           </li>
         )}
@@ -147,14 +119,14 @@ class ReduxFormTutorial extends Component {
         <Field
           label="Title"
           name="title"
-          component={this.renderField}
+          component={ renderField }
           type="text"
         />
 
         <Field
           label="Source"
           name="source"
-          component={this.renderField}
+          component={ renderField }
           type="url"
         />
 

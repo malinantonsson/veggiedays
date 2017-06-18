@@ -62,21 +62,22 @@ export function onFormSubmit(state, values, isNew, post) {
 }
 
 
-// export function renderField(field) {
-//   console.log('field: ', field);
-//   const { meta: { touched, error } } = field;
-//   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
-//   return (
-//     <div className={className}>
-//       <label>{field.label}</label>
-//       <input
-//         type={field.type ? field.type : "text"}
-//         className="form-control"
-//         {...field.input}
-//       />
-//       <div className="text-help">
-//         {touched ? error : ''}
-//       </div>
-//     </div>
-//   );
-// }
+export function renderField(field) {
+  console.log('hello');
+  console.log('field: ', field);
+  const { meta: { touched, error } } = field;
+  const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+  return (
+    <div className={className}>
+      <label>{field.label}</label>
+      <input
+        type={field.type ? field.type : "text"}
+        className="form-control"
+        {...field.input}
+      />
+      <div className="text-help">
+        {touched ? error : ''}
+      </div>
+    </div>
+  );
+}
