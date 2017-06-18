@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import { onFormSubmit, renderField, renderIngredients } from '../helpers/form';
+import { onFormSubmit, renderField, renderIngredients, renderTextField } from '../helpers/form';
 
 const form = reduxForm({
   form: 'ReduxFormTutorial',
@@ -65,25 +65,6 @@ class ReduxFormTutorial extends Component {
 		);
   }
 
-  renderTextField(field) {
-    const { meta: { touched, error } } = field;
-    const className = `form-group ${touched && error ? 'has-danger' : ''}`;
-    return (
-      <div className={className}>
-        <label>{field.label}</label>
-        <textarea
-          className="form-control"
-          {...field.input}
-        ></textarea>
-        <div className="text-help">
-          {touched ? error : ''}
-        </div>
-      </div>
-    );
-  }
-
-
-
   render() {
     const { handleSubmit } = this.props;
 
@@ -108,7 +89,7 @@ class ReduxFormTutorial extends Component {
         <Field
           label="Description"
           name="content"
-          component={this.renderTextField}
+          component={ renderTextField }
         />
 
         <FieldArray

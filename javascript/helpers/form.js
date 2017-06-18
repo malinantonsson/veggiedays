@@ -104,3 +104,20 @@ export function renderIngredients({ fields, meta: { touched, error } }) {
     </ul>
   );
 }
+
+export function renderTextField(field) {
+  const { meta: { touched, error } } = field;
+  const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+  return (
+    <div className={className}>
+      <label>{field.label}</label>
+      <textarea
+        className="form-control"
+        {...field.input}
+      ></textarea>
+      <div className="text-help">
+        {touched ? error : ''}
+      </div>
+    </div>
+  );
+}
