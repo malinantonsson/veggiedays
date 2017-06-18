@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+
+import { onFormSubmit } from '../helpers/form';
 
 const form = reduxForm({
   form: 'ReduxFormTutorial',
@@ -17,6 +20,18 @@ const renderField = field => (
 
 
 class ReduxFormTutorial extends Component {
+  constructor(props) {
+    super(props);
+    this.renderField = this.renderField.bind(this);
+    this.handleImgChange = this.handleImgChange.bind(this);
+
+    this.renderImgField = this.renderImgField.bind(this);
+    this.renderIngredients = this.renderIngredients.bind(this);
+
+    this.postForm = this.postForm.bind(this);
+
+    this.state = { img : ''};
+  }
   componentDidMount() {
     //get the id from the url
 		//if comes from the router definition
@@ -24,9 +39,101 @@ class ReduxFormTutorial extends Component {
 		this.props.fetchRecipe(slug);
   }
 
+  postForm(values) {
+    this.props.editRecipe(values.firebaseKey, values, () => {
+        this.props.history.push(`/recipe/${values.slug}`);
+    });
+  }
 
-  handleFormSubmit(formProps) {
-    this.props.submitFormAction(formProps);
+  onSubmit(values) {
+    console.log(values);
+
+    onFormSubmit(this.state, values, false, this.postForm);
+	}
+
+  renderField(field) {
+    console.log('render field');
+		const { meta: { touched, error } } = field;
+		const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+		return (
+			<div className={className}>
+				<label>{field.label}</label>
+				<input
+					type={field.type ? field.type : "text"}
+					className="form-control"
+					{...field.input}
+				/>
+				<div className="text-help">
+					{touched ? error : ''}
+				</div>
+			</div>
+		);
+	}
+
+  handleImgChange(evt) {
+      this.setState({ img: evt.target.files[0]});
+  }
+
+  renderImgField({ input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning } } = field) {
+		const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<input
+          name="img"
+					type={type ? type : "text"}
+					className="form-control"
+          onChange={(evt) => this.handleImgChange(evt)}
+				/>
+				<div className="text-help">
+					{touched ? error : ''}
+				</div>
+			</div>
+		);
+  }
+
+  renderTextField(field) {
+    const { meta: { touched, error } } = field;
+    const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+    return (
+      <div className={className}>
+        <label>{field.label}</label>
+        <textarea
+          className="form-control"
+          {...field.input}
+        ></textarea>
+        <div className="text-help">
+          {touched ? error : ''}
+        </div>
+      </div>
+    );
+  }
+
+  renderIngredients({ fields, meta: { touched, error } }) {
+    return (
+      <ul>
+
+        {fields.map((ingredient, index) =>
+          <li key={index}>
+            <button
+              type="button"
+              title="Remove ingredient"
+              onClick={() => fields.remove(index)}>Remove</button>
+            <h4>ingredient #{index + 1}</h4>
+            <Field
+              name={`${ingredient}.content`}
+              type="text"
+              component={this.renderField}
+              label="ingredient"/>
+          </li>
+        )}
+        <li>
+          <button type="button" onClick={() => fields.push({})}>Add ingredient</button>
+          {touched && error && <span>{error}</span>}
+        </li>
+      </ul>
+    );
   }
 
 
@@ -35,31 +142,43 @@ class ReduxFormTutorial extends Component {
 
 
     return (
-      <div>
-        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
-          <label>First Name:</label>
-          <Field name="title" type="text" component={renderField}/>
+        <Field
+          label="Title"
+          name="title"
+          component={this.renderField}
+          type="text"
+        />
 
-          <label>Last Name:</label>
-          <Field name="lastName" type="text" component={renderField}/>
+        <Field
+          label="Source"
+          name="source"
+          component={this.renderField}
+          type="url"
+        />
 
-          <label>Gender:</label>
-          <Field name="sex" component="select">
-            <option></option>
-            <option name="Male">Male</option>
-            <option name="Female">Female</option>
-          </Field>
+        <Field
+          label="Description"
+          name="content"
+          component={this.renderTextField}
+        />
 
-          <label>Email:</label>
-          <Field name="email" type="email" component={renderField} />
+        <FieldArray
+          name="ingredients"
+          component={this.renderIngredients}/>
 
-          <label>Phone:</label>
-          <Field name="phoneNumber" type="tel" component={renderField}/>
+        <Field
+          label="Image"
+          name="image"
+          type="file"
+          component={this.renderImgField}
+        />
 
-          <button action="submit">Save changes</button>
-        </form>
-      </div>
+				<button type="submit" className="btn btn-primary">Submit</button>
+				<Link to="/" className="btn btn-danger">Cancel</Link>
+
+			</form>
     );
   }
 }
@@ -87,7 +206,7 @@ function validate(formProps) {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
+  //console.log(state);
   return {
     user: state.user,
     recipe: state.recipes[ownProps.match.params.slug],
