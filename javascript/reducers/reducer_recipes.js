@@ -5,6 +5,7 @@ export default function(state = {}, action) {
 	switch (action.type) {
 		case FETCH_RECIPES:
 			return _.mapKeys(action.payload.data, 'slug');
+
 		case FETCH_RECIPE:
 			//get the firebaseKey from the object key
 			const firebaseKey = Object.getOwnPropertyNames(action.payload.data)[0];
