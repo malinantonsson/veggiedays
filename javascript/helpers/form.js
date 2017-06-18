@@ -15,6 +15,8 @@ export function onFormSubmit(state, values, isNew, post) {
   //values.slug = this.generateSlug(values);
 
   var file = state.img;
+  console.log(file);
+  return;
   //if there is a file
   if(file.name) {
     var storageRef = Storage.ref();
@@ -115,6 +117,31 @@ export function renderTextField(field) {
         className="form-control"
         {...field.input}
       ></textarea>
+      <div className="text-help">
+        {touched ? error : ''}
+      </div>
+    </div>
+  );
+}
+
+export function handleImgChange(evt, _this) {
+    _this.setState({ img: evt.target.files[0]});
+}
+
+export function renderImgField(field) {
+  const { input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning }, that } = field
+
+  const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+
+  return (
+    <div className={className}>
+      <label>{label}</label>
+      <input
+        name="img"
+        type={type ? type : "text"}
+        className="form-control"
+        onChange={(evt) => handleImgChange(evt, that)}
+      />
       <div className="text-help">
         {touched ? error : ''}
       </div>

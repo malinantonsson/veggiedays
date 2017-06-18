@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import { onFormSubmit, renderField, renderIngredients, renderTextField } from '../helpers/form';
+import { onFormSubmit, renderField, renderIngredients, renderTextField, handleImgChange, renderImgField } from '../helpers/form';
 
 const form = reduxForm({
   form: 'ReduxFormTutorial',
@@ -15,11 +15,6 @@ const form = reduxForm({
 class ReduxFormTutorial extends Component {
   constructor(props) {
     super(props);
-
-    this.handleImgChange = this.handleImgChange.bind(this);
-
-    this.renderImgField = this.renderImgField.bind(this);
-    //this.renderIngredients = this.renderIngredients.bind(this);
 
     this.postForm = this.postForm.bind(this);
 
@@ -39,31 +34,9 @@ class ReduxFormTutorial extends Component {
   }
 
   onSubmit(values) {
+    //console.log(values);
     onFormSubmit(this.state, values, false, this.postForm);
 	}
-
-  handleImgChange(evt) {
-      this.setState({ img: evt.target.files[0]});
-  }
-
-  renderImgField({ input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning } } = field) {
-		const className = `form-group ${touched && error ? 'has-danger' : ''}`;
-
-		return (
-			<div className={className}>
-				<label>{label}</label>
-				<input
-          name="img"
-					type={type ? type : "text"}
-					className="form-control"
-          onChange={(evt) => this.handleImgChange(evt)}
-				/>
-				<div className="text-help">
-					{touched ? error : ''}
-				</div>
-			</div>
-		);
-  }
 
   render() {
     const { handleSubmit } = this.props;
@@ -100,7 +73,8 @@ class ReduxFormTutorial extends Component {
           label="Image"
           name="image"
           type="file"
-          component={this.renderImgField}
+          that={this}
+          component={ renderImgField }
         />
 
 				<button type="submit" className="btn btn-primary">Submit</button>
