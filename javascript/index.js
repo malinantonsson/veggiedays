@@ -16,6 +16,7 @@ import App from './components/app';
 import Header from './components/header';
 import RecipeNew from './containers/recipe_new';
 import RecipeShow from './containers/recipe_show';
+import RecipeEdit from './containers/recipe_edit';
 const APP_CONTAINER = document.querySelector('.app-container');
 
 
@@ -29,7 +30,7 @@ ReactDOM.render(
         <main className="wrapper">
           <Switch>
               <Route path="/recipe/new" component={RecipeNew} />
-              <Route path="/recipe/edit/:slug" component={RecipeShow} />
+              <Route path="/recipe/edit/:slug" component={RecipeEdit} />
               <Route path="/recipe/:slug" component={RecipeShow} />
     	    		<Route path="/" component={App} />
   	    	</Switch>
