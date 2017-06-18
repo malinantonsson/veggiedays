@@ -34,7 +34,6 @@ class ReduxFormTutorial extends Component {
   }
 
   onSubmit(values) {
-    //console.log(values);
     onFormSubmit(this.state, values, false, this.postForm);
 	}
 
@@ -88,20 +87,12 @@ class ReduxFormTutorial extends Component {
 function validate(formProps) {
   const errors = {};
 
-  if (!formProps.firstName) {
-    errors.firstName = 'Please enter a first name';
+  if (!formProps.title) {
+    errors.title = "Enter a title!";
   }
 
-  if (!formProps.lastName) {
-    errors.lastName = 'Please enter a last name';
-  }
-
-  if (!formProps.email) {
-    errors.email = 'Please enter an email';
-  }
-
-  if (!formProps.phoneNumber) {
-    errors.phoneNumber = 'Please enter a phone number'
+  if (!formProps.content) {
+		errors.content = "Enter a content!";
   }
 
   return errors;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Storage } from '../firebase-config';
 
 export function generateSlug(values) {
   return values.title.replace(' ', '-');
@@ -15,8 +16,7 @@ export function onFormSubmit(state, values, isNew, post) {
   //values.slug = this.generateSlug(values);
 
   var file = state.img;
-  console.log(file);
-  return;
+
   //if there is a file
   if(file.name) {
     var storageRef = Storage.ref();
