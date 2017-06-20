@@ -2,4 +2,27 @@
   &__list {
     margin: 1em 0;
   }
+
+  &__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+
+    .form-group {
+      flex-grow: 1;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  &__remove {
+    background: red;
+  }
+
+  &__add {
+    width: span(4);
+    display: block;
+    margin: 1rem auto;
+    background: green;
+  }
 }

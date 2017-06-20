@@ -22,6 +22,8 @@ input:not([type=file]) {
 
 textarea {
   @extend %field-styles;
+  resize: none;
+  min-height: 10em;
 }
 
 .recipe-new,

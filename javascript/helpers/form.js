@@ -82,28 +82,43 @@ export function renderField(field) {
 }
 
 export function renderIngredients({ fields, meta: { touched, error } }) {
-  return (
-    <ul>
+  //render input field if there are no ingredients
+  if(fields.length === 0) {
+    fields.push({});
+  }
 
-      {fields.map((ingredient, index) =>
-        <li key={index}>
-          <button
-            type="button"
-            title="Remove ingredient"
-            onClick={() => fields.remove(index)}>Remove</button>
-          <h4>ingredient #{index + 1}</h4>
-          <Field
-            name={`${ingredient}.content`}
-            type="text"
-            component={ renderField }
-            label="ingredient"/>
+  return (
+    <div>
+      <label>Ingredients</label>
+      <ul className="ingredients__form">
+
+        {fields.map((ingredient, index) =>
+          <li className="ingredients__item" key={index}>
+            <Field
+              name={`${ingredient}.content`}
+              type="text"
+              component={ renderField }/>
+
+              <button
+                type="button"
+                title="Remove ingredient"
+                className="ingredients__remove"
+                onClick={() => fields.remove(index)}>-</button>
+          </li>
+        )}
+        <li>
+
+          {touched && error && <span>{error}</span>}
         </li>
-      )}
-      <li>
-        <button type="button" onClick={() => fields.push({})}>Add ingredient</button>
-        {touched && error && <span>{error}</span>}
-      </li>
-    </ul>
+      </ul>
+
+      <button
+        type="button"
+        onClick={() => fields.push({})}
+        className="ingredients__add">
+        Add ingredient
+      </button>
+    </div>
   );
 }
 
