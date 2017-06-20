@@ -16,13 +16,16 @@ $singleColMaxWidth: 600px;
 
 $gutter: 1rem;
 
-$light-gray: #f6f5f3;
+$very-light-gray: #f6f5f3;
+$light-gray: #ccc;
 $mid-gray: #827e7a;
 $dark-gray: #334557;
 $white: #fff;
 
-$background-color: $light-gray;
+$background-color: $very-light-gray;
 $background-color-content: $white;
 
 $copy-dark: $mid-gray;
 $heading-dark: $dark-gray;
+
+$border-color: #ccc;

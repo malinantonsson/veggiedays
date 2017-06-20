@@ -42,7 +42,9 @@ class RecipeEdit extends Component {
 
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+      <form
+        onSubmit={handleSubmit(this.onSubmit.bind(this))}
+        className="recipe-edit">
 
         <Field
           label="Title"

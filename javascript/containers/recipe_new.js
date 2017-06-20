@@ -30,7 +30,9 @@ class RecipeNew extends Component {
     const { handleSubmit } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+      <form
+        onSubmit={handleSubmit(this.onSubmit.bind(this))}
+        className="recipe-new">
 
         <Field
           label="Title"

@@ -1,0 +1,6 @@
+@mixin cardLayout() {
+    margin: 0 auto;
+    padding: $gutter;
+    background-color: $background-color-content;
+    @include box-shadow();
+}

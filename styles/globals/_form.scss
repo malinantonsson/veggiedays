@@ -1,0 +1,31 @@
+%field-styles {
+  border: 1px solid $border-color;
+  border-radius: 3px;
+  padding: 1em;
+  width: 100%;
+}
+
+.form-group {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: .5em;
+}
+
+input:not([type=file]) {
+  @extend %field-styles;
+}
+
+textarea {
+  @extend %field-styles;
+}
+
+.recipe-new,
+.recipe-edit {
+  width: span(8);
+  @include cardLayout;
+}
