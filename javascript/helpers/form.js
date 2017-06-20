@@ -139,8 +139,22 @@ export function renderTextField(field) {
   );
 }
 
-export function handleImgChange(evt, _this) {
-    _this.setState({ img: evt.target.files[0]});
+function handleImgChange(evt, _this) {
+    if(!evt.target.files || !evt.target.files[0]) return;
+
+    const img = evt.target.files[0];
+    let imgElement = document.querySelector('[data-behaviour=display-img]');
+
+    _this.setState({ img });
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        imgElement.setAttribute('src', e.target.result);
+    }
+
+    reader.readAsDataURL(img);
+
 }
 
 export function renderImgField(field) {
@@ -148,8 +162,19 @@ export function renderImgField(field) {
 
   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
 
+  let imgUrl;
+
+  if(field.imgUrl) {
+    imgUrl = field.imgUrl;
+  }
+
   return (
+
+
     <div className={className}>
+
+      <img data-behaviour="display-img" src={imgUrl} />
+
       <input
         id="recipe-img"
         name="img"
@@ -157,9 +182,10 @@ export function renderImgField(field) {
         className="form-control"
         onChange={(evt) => handleImgChange(evt, that)}
       />
+
       <label
         htmlFor="recipe-img"
-        className="img-label recipe-img__label">Add an image</label>
+        className="img-label recipe-img__label">Upload an image</label>
       <div className="text-help">
         {touched ? error : ''}
       </div>

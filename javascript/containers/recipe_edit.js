@@ -33,13 +33,29 @@ class RecipeEdit extends Component {
     });
   }
 
+  // renderImg() {
+  //   const { initialValues } = this.props;
+  //   if(!initialValues) return;
+  //
+  //   if(initialValues.imgUrl) {
+  //     const imgUrl = initialValues.imgUrl;
+  //     return (
+  //       <img src={imgUrl} />
+  //     )
+  //   }
+  // }
+
   onSubmit(values) {
     onFormSubmit(this.state, values, false, this.postForm);
 	}
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, initialValues } = this.props;
+    let imgUrl;
 
+    if(initialValues && initialValues.imgUrl) {
+      imgUrl = initialValues.imgUrl;
+    }
 
     return (
       <form
@@ -79,6 +95,7 @@ class RecipeEdit extends Component {
         <Field
           name="image"
           type="file"
+          imgUrl={imgUrl}
           that={ this }
           component={ renderImgField }
         />

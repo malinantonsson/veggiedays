@@ -11,7 +11,7 @@ class RecipeNew extends Component {
     super(props);
 
     this.postForm = this.postForm.bind(this);
-    this.state = { img : ''};
+    this.state = { img : null};
 
   }
 
