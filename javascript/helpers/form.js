@@ -6,7 +6,7 @@ export function generateSlug(values) {
   return values.title.toLowerCase().replace(/ /g, '-');
 }
 
-export function onFormSubmit(state, values, isNew, post) {
+export function onFormSubmit(values, isNew, post) {
 
   if(isNew) {
     values.slug = generateSlug(values);
@@ -15,19 +15,19 @@ export function onFormSubmit(state, values, isNew, post) {
   values.date = Date.now();
   //values.slug = this.generateSlug(values);
 
-  var file = state.img;
+  //var file = state.img;
 
   //if there is a file
-  if(file.name) {
+  if(values.img) {
     var storageRef = Storage.ref();
 
     // Create the file metadata
     var metadata = {
-      contentType: file.type
+      contentType: values.img.type
     };
 
     // Upload file and metadata
-    var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
+    var uploadTask = storageRef.child('images/' + values.img.name).put(values.img, metadata);
 
     // Register three observers:
     // 1. 'state_changed' observer, called any time the state changes
@@ -82,10 +82,6 @@ export function renderField(field) {
 }
 
 export function renderIngredients({ fields, meta: { touched, error } }) {
-  //render input field if there are no ingredients
-  if(fields.length === 0) {
-    fields.push({});
-  }
 
   return (
     <div>
@@ -145,8 +141,6 @@ function handleImgChange(evt, _this) {
     const img = evt.target.files[0];
     let imgElement = document.querySelector('[data-behaviour=display-img]');
 
-    _this.setState({ img });
-
     const reader = new FileReader();
 
     reader.onload = function (e) {
@@ -157,38 +151,70 @@ function handleImgChange(evt, _this) {
 
 }
 
-export function renderImgField(field) {
-  const { input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning }, that } = field
+const adaptFileEventToValue = delegate =>
+  e => delegate(e.target.files[0]);
 
-  const className = `form-group ${touched && error ? 'has-danger' : ''}`;
-
-  let imgUrl;
-
-  if(field.imgUrl) {
-    imgUrl = field.imgUrl;
-  }
+export function fileInput(field) {
+  const {
+    input: {
+      value: omitValue,
+      onChange,
+      onBlur,
+      ...inputProps,
+    },
+    meta: omitMeta,
+    ...props,
+  } = field;
 
   return (
-
-
-    <div className={className}>
-
-      <img data-behaviour="display-img" src={imgUrl} />
-
+    <div>
       <input
+        onChange={adaptFileEventToValue(onChange)}
+        onBlur={adaptFileEventToValue(onBlur)}
+        type="file"
         id="recipe-img"
-        name="img"
-        type={type ? type : "text"}
-        className="form-control"
-        onChange={(evt) => handleImgChange(evt, that)}
+        {...inputProps}
+        {...props}
       />
-
       <label
         htmlFor="recipe-img"
         className="img-label recipe-img__label">Upload an image</label>
-      <div className="text-help">
-        {touched ? error : ''}
-      </div>
     </div>
   );
 }
+
+// export function renderImgField(field) {
+//   const { input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning }, that } = field
+//
+//   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+//
+//   let imgUrl;
+//
+//   if(field.imgUrl) {
+//     imgUrl = field.imgUrl;
+//   }
+//
+//   return (
+//
+//
+//     <div className={className}>
+//
+//       <img data-behaviour="display-img" src={imgUrl} />
+//
+//       <input
+//         id="recipe-img"
+//         name="img"
+//         type={type ? type : "text"}
+//         className="form-control"
+//         onChange={(evt) => handleImgChange(evt, that)}
+//       />
+//
+//       <label
+//         htmlFor="recipe-img"
+//         className="img-label recipe-img__label">Upload an image</label>
+//       <div className="text-help">
+//         {touched ? error : ''}
+//       </div>
+//     </div>
+//   );
+// }

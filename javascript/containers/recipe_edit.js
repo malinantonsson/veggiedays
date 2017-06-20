@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import { onFormSubmit, renderField, renderIngredients, renderTextField, handleImgChange, renderImgField } from '../helpers/form';
+import { onFormSubmit, renderField, renderIngredients, renderTextField, fileInput } from '../helpers/form';
 
 const form = reduxForm({
   form: 'RecipeEdit',
@@ -17,8 +16,6 @@ class RecipeEdit extends Component {
     super(props);
 
     this.postForm = this.postForm.bind(this);
-
-    this.state = { img : ''};
   }
   componentDidMount() {
     //get the id from the url
@@ -33,29 +30,17 @@ class RecipeEdit extends Component {
     });
   }
 
-  // renderImg() {
-  //   const { initialValues } = this.props;
-  //   if(!initialValues) return;
-  //
-  //   if(initialValues.imgUrl) {
-  //     const imgUrl = initialValues.imgUrl;
-  //     return (
-  //       <img src={imgUrl} />
-  //     )
-  //   }
-  // }
-
   onSubmit(values) {
-    onFormSubmit(this.state, values, false, this.postForm);
+    onFormSubmit(values, false, this.postForm);
 	}
 
   render() {
-    const { handleSubmit, initialValues } = this.props;
+    const { handleSubmit } = this.props;
     let imgUrl;
 
-    if(initialValues && initialValues.imgUrl) {
-      imgUrl = initialValues.imgUrl;
-    }
+    // if(initialValues && initialValues.imgUrl) {
+    //   imgUrl = initialValues.imgUrl;
+    // }
 
     return (
       <form
@@ -93,11 +78,8 @@ class RecipeEdit extends Component {
         />
 
         <Field
-          name="image"
-          type="file"
-          imgUrl={imgUrl}
-          that={ this }
-          component={ renderImgField }
+          name="img"
+          component={ fileInput }
         />
 
 				<button type="submit" className="btn btn-primary">Submit</button>
@@ -125,8 +107,6 @@ function validate(formProps) {
 function mapStateToProps(state, ownProps) {
   //console.log(state);
   return {
-    user: state.user,
-    recipe: state.recipes[ownProps.match.params.slug],
     initialValues: state.recipes[ownProps.match.params.slug]
   };
 }
