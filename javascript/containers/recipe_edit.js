@@ -8,11 +8,11 @@ import * as actions from '../actions';
 import { onFormSubmit, renderField, renderIngredients, renderTextField, handleImgChange, renderImgField } from '../helpers/form';
 
 const form = reduxForm({
-  form: 'ReduxFormTutorial',
+  form: 'RecipeEdit',
   validate
 });
 
-class ReduxFormTutorial extends Component {
+class RecipeEdit extends Component {
   constructor(props) {
     super(props);
 
@@ -69,10 +69,16 @@ class ReduxFormTutorial extends Component {
           component={ renderIngredients }/>
 
         <Field
+          label="Instructions"
+          name="instructions"
+          component={ renderTextField }
+        />
+
+        <Field
           label="Image"
           name="image"
           type="file"
-          that={this}
+          that={ this }
           component={ renderImgField }
         />
 
@@ -107,4 +113,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, actions)(form(ReduxFormTutorial));
+export default connect(mapStateToProps, actions)(form(RecipeEdit));

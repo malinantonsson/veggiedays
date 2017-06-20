@@ -57,10 +57,16 @@ class RecipeNew extends Component {
           component={ renderIngredients }/>
 
         <Field
+          label="Instructions"
+          name="instructions"
+          component={ renderTextField }
+        />
+
+        <Field
           label="Image"
           name="image"
           type="file"
-          that={this}
+          that={ this }
           component={ renderImgField }
         />
 
