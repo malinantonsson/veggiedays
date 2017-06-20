@@ -3,7 +3,7 @@ import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Storage } from '../firebase-config';
 
 export function generateSlug(values) {
-  return values.title.replace(/ /g, '-');
+  return values.title.toLowerCase().replace(/ /g, '-');
 }
 
 export function onFormSubmit(state, values, isNew, post) {

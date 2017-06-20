@@ -59,6 +59,20 @@ export class RecipeShow extends Component {
     }
   }
 
+  renderInstructions() {
+    const recipe = this.props.recipe;
+    if(recipe.instructions) {
+      return (
+        <div>
+          <h2 className="ingredients__heading">Instructions</h2>
+          <p className="recipe__instructions">
+            { recipe.instructions }
+          </p>
+        </div>
+      );
+    }
+  }
+
   render() {
 		const { recipe } = this.props;
     if(!recipe) return <div>Loading...</div>
@@ -67,12 +81,16 @@ export class RecipeShow extends Component {
 
       <div className="recipe">
         <h1 className="recipe__title">{recipe.title}</h1>
+
         {this.renderImg()}
+
         <p className="recipe__description">
           {recipe.content}
         </p>
 
         { this.renderIngredients() }
+
+        { this.renderInstructions() }
 
         { this.renderSource() }
       </div>
