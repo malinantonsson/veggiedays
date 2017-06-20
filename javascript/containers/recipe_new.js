@@ -60,7 +60,7 @@ class RecipeNew extends Component {
           label="Image"
           name="image"
           type="file"
-          that={this}
+          that={ this }
           component={ renderImgField }
         />
 

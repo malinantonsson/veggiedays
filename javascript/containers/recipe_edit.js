@@ -8,11 +8,11 @@ import * as actions from '../actions';
 import { onFormSubmit, renderField, renderIngredients, renderTextField, handleImgChange, renderImgField } from '../helpers/form';
 
 const form = reduxForm({
-  form: 'ReduxFormTutorial',
+  form: 'RecipeEdit',
   validate
 });
 
-class ReduxFormTutorial extends Component {
+class RecipeEdit extends Component {
   constructor(props) {
     super(props);
 
@@ -107,4 +107,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, actions)(form(ReduxFormTutorial));
+export default connect(mapStateToProps, actions)(form(RecipeEdit));
