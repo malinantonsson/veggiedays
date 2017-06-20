@@ -22,7 +22,6 @@ class RecipeNew extends Component {
   }
 
   onSubmit(values) {
-    //return;
     onFormSubmit(values, true, this.postForm);
 	}
 

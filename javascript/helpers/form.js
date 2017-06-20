@@ -135,26 +135,33 @@ export function renderTextField(field) {
   );
 }
 
-function handleImgChange(evt, _this) {
-    if(!evt.target.files || !evt.target.files[0]) return;
+function handleImgChange(img) {
+    if(!img) return;
 
-    const img = evt.target.files[0];
-    let imgElement = document.querySelector('[data-behaviour=display-img]');
+    const imgElement = document.querySelector('[data-behaviour=display-img]');
+    const imgLabel = document.querySelector('.recipe-img__label');
 
     const reader = new FileReader();
 
     reader.onload = function (e) {
         imgElement.setAttribute('src', e.target.result);
+        imgLabel.innerHTML = 'Change image';
     }
 
     reader.readAsDataURL(img);
 
 }
 
-const adaptFileEventToValue = delegate =>
-  e => delegate(e.target.files[0]);
+function adaptFileEventToValue(delegate) {
+    let evt = e => {
+      handleImgChange(e.target.files[0]);
+      return delegate(e.target.files[0]);
+    };
+    return evt;
+}
 
 export function fileInput(field) {
+  console.log(field);
   const {
     input: {
       value: omitValue,
@@ -163,11 +170,14 @@ export function fileInput(field) {
       ...inputProps,
     },
     meta: omitMeta,
+    imgUrl,
     ...props,
   } = field;
 
   return (
     <div>
+      <img data-behaviour="display-img" src={imgUrl} />
+
       <input
         onChange={adaptFileEventToValue(onChange)}
         onBlur={adaptFileEventToValue(onBlur)}
@@ -178,43 +188,7 @@ export function fileInput(field) {
       />
       <label
         htmlFor="recipe-img"
-        className="img-label recipe-img__label">Upload an image</label>
+        className="img-label recipe-img__label">{ imgUrl ? 'Change image' : 'Upload an image'}</label>
     </div>
   );
 }
-
-// export function renderImgField(field) {
-//   const { input:{value: omitValue, ...inputProps}, label, type, meta: { touched, error, warning }, that } = field
-//
-//   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
-//
-//   let imgUrl;
-//
-//   if(field.imgUrl) {
-//     imgUrl = field.imgUrl;
-//   }
-//
-//   return (
-//
-//
-//     <div className={className}>
-//
-//       <img data-behaviour="display-img" src={imgUrl} />
-//
-//       <input
-//         id="recipe-img"
-//         name="img"
-//         type={type ? type : "text"}
-//         className="form-control"
-//         onChange={(evt) => handleImgChange(evt, that)}
-//       />
-//
-//       <label
-//         htmlFor="recipe-img"
-//         className="img-label recipe-img__label">Upload an image</label>
-//       <div className="text-help">
-//         {touched ? error : ''}
-//       </div>
-//     </div>
-//   );
-// }

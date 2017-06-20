@@ -35,12 +35,12 @@ class RecipeEdit extends Component {
 	}
 
   render() {
-    const { handleSubmit } = this.props;
-    let imgUrl;
+    const { handleSubmit, initialValues } = this.props;
+    let imgUrl = '';
 
-    // if(initialValues && initialValues.imgUrl) {
-    //   imgUrl = initialValues.imgUrl;
-    // }
+    if(initialValues && initialValues.imgUrl) {
+      imgUrl = initialValues.imgUrl;
+    }
 
     return (
       <form
@@ -80,6 +80,7 @@ class RecipeEdit extends Component {
         <Field
           name="img"
           component={ fileInput }
+          imgUrl={imgUrl}
         />
 
 				<button type="submit" className="btn btn-primary">Submit</button>
@@ -105,7 +106,6 @@ function validate(formProps) {
 }
 
 function mapStateToProps(state, ownProps) {
-  //console.log(state);
   return {
     initialValues: state.recipes[ownProps.match.params.slug]
   };
