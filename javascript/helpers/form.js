@@ -150,13 +150,16 @@ export function renderImgField(field) {
 
   return (
     <div className={className}>
-      <label>{label}</label>
       <input
+        id="recipe-img"
         name="img"
         type={type ? type : "text"}
         className="form-control"
         onChange={(evt) => handleImgChange(evt, that)}
       />
+      <label
+        htmlFor="recipe-img"
+        className="img-label recipe-img__label">Add an image</label>
       <div className="text-help">
         {touched ? error : ''}
       </div>

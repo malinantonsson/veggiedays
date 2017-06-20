@@ -22,6 +22,9 @@ $mid-gray: #827e7a;
 $dark-gray: #334557;
 $white: #fff;
 
+$success: green;
+$danger: red;
+
 $background-color: $very-light-gray;
 $background-color-content: $white;
 
@@ -29,3 +32,6 @@ $copy-dark: $mid-gray;
 $heading-dark: $dark-gray;
 
 $border-color: #ccc;
+
+$button-add: $success;
+$button-remove: $danger;

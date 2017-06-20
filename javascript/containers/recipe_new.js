@@ -65,7 +65,6 @@ class RecipeNew extends Component {
         />
 
         <Field
-          label="Image"
           name="image"
           type="file"
           that={ this }

@@ -16,13 +16,15 @@
   }
 
   &__remove {
-    background: red;
+    @include button-secondary();
+    color: $button-remove;
   }
 
   &__add {
     width: span(4);
     display: block;
     margin: 1rem auto;
-    background: green;
+    @include button-secondary();
+    color: $button-add;
   }
 }

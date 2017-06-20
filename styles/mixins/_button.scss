@@ -1,0 +1,14 @@
+@mixin button() {
+  padding: 1em;
+  cursor: pointer;
+  text-align: center;
+}
+
+@mixin button-primary {
+  border: none;
+}
+
+@mixin button-secondary {
+  border: 2px solid;
+  background-color: $white;
+}

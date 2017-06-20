@@ -16,4 +16,10 @@
     &__instructions {
       white-space: pre;
     }
+
+    &-img__label {
+        width: span(4);
+        margin: 0 auto;
+        display: block;
+    }
 }
