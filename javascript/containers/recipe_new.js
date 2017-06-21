@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createRecipe } from '../actions';
 
-import { onFormSubmit, renderField, renderIngredients, renderTextField, handleImgChange, renderImgField } from '../helpers/form';
+import { onFormSubmit, renderField, renderIngredients, renderTextField, fileInput } from '../helpers/form';
 
 class RecipeNew extends Component {
   constructor(props) {
     super(props);
 
     this.postForm = this.postForm.bind(this);
-    this.state = { img : ''};
+    this.state = { img : null};
 
   }
 
@@ -22,7 +22,7 @@ class RecipeNew extends Component {
   }
 
   onSubmit(values) {
-    onFormSubmit(this.state, values, true, this.postForm);
+    onFormSubmit(values, true, this.postForm);
 	}
 
   render() {
@@ -65,10 +65,8 @@ class RecipeNew extends Component {
         />
 
         <Field
-          name="image"
-          type="file"
-          that={ this }
-          component={ renderImgField }
+          name="img"
+          component={ fileInput }
         />
 
 				<button type="submit" className="btn btn-primary">Submit</button>

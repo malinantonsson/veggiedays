@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import { onFormSubmit, renderField, renderIngredients, renderTextField, handleImgChange, renderImgField } from '../helpers/form';
+import { onFormSubmit, renderField, renderIngredients, renderTextField, fileInput } from '../helpers/form';
 
 const form = reduxForm({
   form: 'RecipeEdit',
@@ -17,8 +16,6 @@ class RecipeEdit extends Component {
     super(props);
 
     this.postForm = this.postForm.bind(this);
-
-    this.state = { img : ''};
   }
   componentDidMount() {
     //get the id from the url
@@ -34,12 +31,16 @@ class RecipeEdit extends Component {
   }
 
   onSubmit(values) {
-    onFormSubmit(this.state, values, false, this.postForm);
+    onFormSubmit(values, false, this.postForm);
 	}
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, initialValues } = this.props;
+    let imgUrl = '';
 
+    if(initialValues && initialValues.imgUrl) {
+      imgUrl = initialValues.imgUrl;
+    }
 
     return (
       <form
@@ -77,10 +78,9 @@ class RecipeEdit extends Component {
         />
 
         <Field
-          name="image"
-          type="file"
-          that={ this }
-          component={ renderImgField }
+          name="img"
+          component={ fileInput }
+          imgUrl={imgUrl}
         />
 
 				<button type="submit" className="btn btn-primary">Submit</button>
@@ -106,10 +106,7 @@ function validate(formProps) {
 }
 
 function mapStateToProps(state, ownProps) {
-  //console.log(state);
   return {
-    user: state.user,
-    recipe: state.recipes[ownProps.match.params.slug],
     initialValues: state.recipes[ownProps.match.params.slug]
   };
 }
