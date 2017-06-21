@@ -51,7 +51,7 @@ export function onFormSubmit(values, isNew, post) {
       // Handle successful uploads on complete
       // For instance, get the download URL: https://firebasestorage.googleapis.com/...
       var downloadURL = uploadTask.snapshot.downloadURL;
-      values.imgUrl = downloadURL;
+      values.img = downloadURL;
 
 
       post(values);
@@ -68,15 +68,15 @@ export function renderField(field) {
   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
   return (
     <div className={className}>
-      <label>{field.label}</label>
+      <label>{field.label}{field.required ? '*' : ''}</label>
       <input
         type={field.type ? field.type : "text"}
         className="form-control"
         {...field.input}
       />
-      <div className="text-help">
+      <p className="text-error">
         {touched ? error : ''}
-      </div>
+      </p>
     </div>
   );
 }
@@ -103,7 +103,6 @@ export function renderIngredients({ fields, meta: { touched, error } }) {
           </li>
         )}
         <li>
-
           {touched && error && <span>{error}</span>}
         </li>
       </ul>
@@ -123,14 +122,14 @@ export function renderTextField(field) {
   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
   return (
     <div className={className}>
-      <label>{field.label}</label>
+      <label>{field.label}{field.required ? '*' : ''}</label>
       <textarea
         className="form-control"
         {...field.input}
       ></textarea>
-      <div className="text-help">
+      <p className="text-error">
         {touched ? error : ''}
-      </div>
+      </p>
     </div>
   );
 }
@@ -163,6 +162,7 @@ function adaptFileEventToValue(delegate) {
 }
 
 export function fileInput(field) {
+  const img = field.input.value;
   const {
     input: {
       value: omitValue,
@@ -170,14 +170,16 @@ export function fileInput(field) {
       onBlur,
       ...inputProps,
     },
-    meta: omitMeta,
-    imgUrl,
+    meta: {
+      submitFailed,
+      error
+    },
     ...props,
   } = field;
 
   return (
     <div>
-      <img data-behaviour="display-img" src={imgUrl} />
+      <img data-behaviour="display-img" src={img} />
 
       <input
         onChange={adaptFileEventToValue(onChange)}
@@ -189,7 +191,11 @@ export function fileInput(field) {
       />
       <label
         htmlFor="recipe-img"
-        className="img-label recipe-img__label">{ imgUrl ? 'Change image' : 'Upload an image'}</label>
+        className="img-label recipe-img__label">{ img ? 'Change image' : 'Upload an image'}</label>
+
+      <p className="text-error">
+        {(submitFailed && error)? error : ''}
+      </p>
     </div>
   );
 }
