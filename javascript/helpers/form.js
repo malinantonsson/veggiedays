@@ -154,14 +154,15 @@ function handleImgChange(img) {
 
 function adaptFileEventToValue(delegate) {
     let evt = e => {
-      handleImgChange(e.target.files[0]);
+      if(e.target.files) {
+        handleImgChange(e.target.files[0]);
+      }
       return delegate(e.target.files[0]);
     };
     return evt;
 }
 
 export function fileInput(field) {
-  console.log(field);
   const {
     input: {
       value: omitValue,
