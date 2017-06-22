@@ -4416,6 +4416,12 @@ react-dom@^15.5.4:
     object-assign "^4.1.0"
     prop-types "~15.5.7"
 
+react-portal-tooltip@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-portal-tooltip/-/react-portal-tooltip-1.1.5.tgz#d65ab9d168c5a6eeee9109c7fbc99a50ce16802f"
+  dependencies:
+    object-assign "^4.0.1"
+
 react-redux@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.0.5.tgz#f8e8c7b239422576e52d6b7db06439469be9846a"

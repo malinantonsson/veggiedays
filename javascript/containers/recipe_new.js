@@ -40,6 +40,7 @@ class RecipeNew extends Component {
           component={ renderField }
           type="text"
           required="true"
+          helptext="Choose a title that is short but descriptive"
         />
 
         <Field
@@ -47,6 +48,7 @@ class RecipeNew extends Component {
           name="source"
           component={ renderField }
           type="url"
+          helptext="Did someone else create this recipe? If so, give credit!"
         />
 
         <Field

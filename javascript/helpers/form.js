@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
+import ToolTip from 'react-portal-tooltip';
 import { Storage } from '../firebase-config';
 
 export function generateSlug(values) {
@@ -63,12 +64,45 @@ export function onFormSubmit(values, isNew, post) {
   }
 }
 
+
+class AddToolTip extends Component {
+  //console.log(parent);
+  constructor(props) {
+    super(props);
+  }
+  state = {
+      isTooltipActive: false
+  }
+
+  showTooltip() {
+      this.setState({isTooltipActive: true})
+  }
+  hideTooltip() {
+      this.setState({isTooltipActive: false})
+  }
+
+  render() {
+    return (
+      <span>
+          <span id={this.props.parent} onMouseEnter={this.showTooltip.bind(this)} onMouseLeave={this.hideTooltip.bind(this)}>component</span>
+          <ToolTip active={this.state.isTooltipActive} position="right" arrow="left" parent={`#${this.props.parent}`}>
+            <div>
+                <p>{ this.props.helptext }</p>
+            </div>
+          </ToolTip>
+      </span>
+    )
+  }
+}
 export function renderField(field) {
   const { meta: { touched, error } } = field;
+
   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
   return (
     <div className={className}>
       <label>{field.label}{field.required ? '*' : ''}</label>
+      { field.helptext ?
+      <AddToolTip parent={field.input.name} helptext={field.helptext} /> : ''}
       <input
         type={field.type ? field.type : "text"}
         className="form-control"
