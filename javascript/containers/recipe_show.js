@@ -14,10 +14,10 @@ export class RecipeShow extends Component {
   renderImg() {
     const recipe = this.props.recipe;
 
-    if(recipe.imgUrl) {
+    if(recipe.img) {
       return (
         <div className="recipe-img__wrapper">
-          <img className="recipe__img" src={recipe.imgUrl} />
+          <img className="recipe__img" src={recipe.img} />
         </div>
       );
     }

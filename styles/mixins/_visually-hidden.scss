@@ -1,0 +1,22 @@
+@mixin visuallyhidden() {
+  margin: -1px;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip: rect(0, 0, 0, 0);
+  position: absolute;
+}
+
+// Hide text/els
+// --------------------------------------------------------------------------
+
+@mixin text-off-screen {
+    text-indent: -999em;
+}
+
+@mixin el-off-screen {
+    left: -999em;
+    position: absolute;
+}

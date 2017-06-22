@@ -36,11 +36,6 @@ class RecipeEdit extends Component {
 
   render() {
     const { handleSubmit, initialValues } = this.props;
-    let imgUrl = '';
-
-    if(initialValues && initialValues.imgUrl) {
-      imgUrl = initialValues.imgUrl;
-    }
 
     return (
       <form
@@ -52,6 +47,8 @@ class RecipeEdit extends Component {
           name="title"
           component={ renderField }
           type="text"
+          required="true"
+          helptext="Choose a title that is short but descriptive."
         />
 
         <Field
@@ -59,11 +56,13 @@ class RecipeEdit extends Component {
           name="source"
           component={ renderField }
           type="url"
+          helptext="Did someone else create this recipe? Give credit!"
         />
 
         <Field
           label="Description"
           name="content"
+          required="true"
           component={ renderTextField }
         />
 
@@ -80,7 +79,6 @@ class RecipeEdit extends Component {
         <Field
           name="img"
           component={ fileInput }
-          imgUrl={imgUrl}
         />
 
 				<button type="submit" className="btn btn-primary">Submit</button>
@@ -91,16 +89,21 @@ class RecipeEdit extends Component {
   }
 }
 
-function validate(formProps) {
+function validate(values) {
   const errors = {};
 
-  if (!formProps.title) {
-    errors.title = "Enter a title!";
-  }
+  //Validate the pinpit from the 'values' object
+	if(!values.title) {
+		errors.title = "Please enter a title!";
+	}
 
-  if (!formProps.content) {
-		errors.content = "Enter a content!";
-  }
+	if(!values.content) {
+		errors.content = "Please enter a description.";
+	}
+
+  if(!values.img) {
+		errors.img = "Please enter an image";
+	}
 
   return errors;
 }

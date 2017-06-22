@@ -39,6 +39,8 @@ class RecipeNew extends Component {
           name="title"
           component={ renderField }
           type="text"
+          required="true"
+          helptext="Choose a title that is short but descriptive"
         />
 
         <Field
@@ -46,12 +48,14 @@ class RecipeNew extends Component {
           name="source"
           component={ renderField }
           type="url"
+          helptext="Did someone else create this recipe? If so, give credit!"
         />
 
         <Field
           label="Description"
           name="content"
           component={ renderTextField }
+          required="true"
         />
 
         <FieldArray
@@ -83,11 +87,15 @@ function validate(values) {
 
 	//Validate the pinpit from the 'values' object
 	if(!values.title) {
-		errors.title = "Enter a title!";
+		errors.title = "Please enter a title!";
 	}
 
 	if(!values.content) {
-		errors.content = "Enter a content!";
+		errors.content = "Please enter a description.";
+	}
+
+  if(!values.img) {
+		errors.img = "Please enter an image";
 	}
 
 

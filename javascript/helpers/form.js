@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
+import ToolTip from 'react-portal-tooltip';
 import { Storage } from '../firebase-config';
 
 export function generateSlug(values) {
@@ -51,7 +52,7 @@ export function onFormSubmit(values, isNew, post) {
       // Handle successful uploads on complete
       // For instance, get the download URL: https://firebasestorage.googleapis.com/...
       var downloadURL = uploadTask.snapshot.downloadURL;
-      values.imgUrl = downloadURL;
+      values.img = downloadURL;
 
 
       post(values);
@@ -63,20 +64,60 @@ export function onFormSubmit(values, isNew, post) {
   }
 }
 
+
+class AddToolTip extends Component {
+  state = {
+      isTooltipActive: false
+  }
+
+  showTooltip() {
+      this.setState({isTooltipActive: true})
+  }
+  hideTooltip() {
+      this.setState({isTooltipActive: false})
+  }
+
+  render() {
+    let style = {
+      style: {
+        background: '#fff',
+        padding: 10,
+        border: '1px solid #000'
+      },
+      arrowStyle: {
+        color: '#fff',
+        borderColor: '#000'
+      }
+    }
+    return (
+      <span>
+          <span className="copy-help" id={this.props.parent} onMouseEnter={this.showTooltip.bind(this)} onMouseLeave={this.hideTooltip.bind(this)}>help</span>
+          <ToolTip active={this.state.isTooltipActive} position="right" arrow="left" parent={`#${this.props.parent}`} style={style}>
+            <div>
+                <span>{ this.props.helptext }</span>
+            </div>
+          </ToolTip>
+      </span>
+    )
+  }
+}
 export function renderField(field) {
   const { meta: { touched, error } } = field;
+
   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
   return (
     <div className={className}>
-      <label>{field.label}</label>
+      <label>{field.label}{field.required ? '*' : ''} { field.helptext ?
+      <AddToolTip parent={field.input.name} helptext={field.helptext} /> : ''}</label>
+
       <input
         type={field.type ? field.type : "text"}
         className="form-control"
         {...field.input}
       />
-      <div className="text-help">
+      <p className="text-error">
         {touched ? error : ''}
-      </div>
+      </p>
     </div>
   );
 }
@@ -103,7 +144,6 @@ export function renderIngredients({ fields, meta: { touched, error } }) {
           </li>
         )}
         <li>
-
           {touched && error && <span>{error}</span>}
         </li>
       </ul>
@@ -123,14 +163,14 @@ export function renderTextField(field) {
   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
   return (
     <div className={className}>
-      <label>{field.label}</label>
+      <label>{field.label}{field.required ? '*' : ''}</label>
       <textarea
         className="form-control"
         {...field.input}
       ></textarea>
-      <div className="text-help">
+      <p className="text-error">
         {touched ? error : ''}
-      </div>
+      </p>
     </div>
   );
 }
@@ -163,6 +203,7 @@ function adaptFileEventToValue(delegate) {
 }
 
 export function fileInput(field) {
+  const img = field.input.value;
   const {
     input: {
       value: omitValue,
@@ -170,14 +211,16 @@ export function fileInput(field) {
       onBlur,
       ...inputProps,
     },
-    meta: omitMeta,
-    imgUrl,
+    meta: {
+      submitFailed,
+      error
+    },
     ...props,
   } = field;
 
   return (
     <div>
-      <img data-behaviour="display-img" src={imgUrl} />
+      <img data-behaviour="display-img" src={img} />
 
       <input
         onChange={adaptFileEventToValue(onChange)}
@@ -189,7 +232,11 @@ export function fileInput(field) {
       />
       <label
         htmlFor="recipe-img"
-        className="img-label recipe-img__label">{ imgUrl ? 'Change image' : 'Upload an image'}</label>
+        className="img-label recipe-img__label">{ img ? 'Change image' : 'Upload an image'}</label>
+
+      <p className="text-error">
+        {(submitFailed && error)? error : ''}
+      </p>
     </div>
   );
 }
