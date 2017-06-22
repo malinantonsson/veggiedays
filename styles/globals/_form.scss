@@ -47,3 +47,11 @@ textarea {
   width: span(8);
   @include cardLayout;
 }
+
+.copy-help {
+  background-image: url('/public/icons/question-mark.svg');
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 1em;
+  @include text-off-screen();
+}

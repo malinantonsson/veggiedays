@@ -47,7 +47,8 @@ class RecipeEdit extends Component {
           name="title"
           component={ renderField }
           type="text"
-          helptext="Choose a title that is short but descriptive"
+          required="true"
+          helptext="Choose a title that is short but descriptive."
         />
 
         <Field
@@ -55,12 +56,13 @@ class RecipeEdit extends Component {
           name="source"
           component={ renderField }
           type="url"
-          helptext="Did someone else create this recipe? If so, give credit!"
+          helptext="Did someone else create this recipe? Give credit!"
         />
 
         <Field
           label="Description"
           name="content"
+          required="true"
           component={ renderTextField }
         />
 

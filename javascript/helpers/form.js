@@ -66,10 +66,6 @@ export function onFormSubmit(values, isNew, post) {
 
 
 class AddToolTip extends Component {
-  //console.log(parent);
-  constructor(props) {
-    super(props);
-  }
   state = {
       isTooltipActive: false
   }
@@ -82,12 +78,23 @@ class AddToolTip extends Component {
   }
 
   render() {
+    let style = {
+      style: {
+        background: '#fff',
+        padding: 10,
+        border: '1px solid #000'
+      },
+      arrowStyle: {
+        color: '#fff',
+        borderColor: '#000'
+      }
+    }
     return (
       <span>
-          <span id={this.props.parent} onMouseEnter={this.showTooltip.bind(this)} onMouseLeave={this.hideTooltip.bind(this)}>component</span>
-          <ToolTip active={this.state.isTooltipActive} position="right" arrow="left" parent={`#${this.props.parent}`}>
+          <span className="copy-help" id={this.props.parent} onMouseEnter={this.showTooltip.bind(this)} onMouseLeave={this.hideTooltip.bind(this)}>help</span>
+          <ToolTip active={this.state.isTooltipActive} position="right" arrow="left" parent={`#${this.props.parent}`} style={style}>
             <div>
-                <p>{ this.props.helptext }</p>
+                <span>{ this.props.helptext }</span>
             </div>
           </ToolTip>
       </span>
@@ -100,9 +107,9 @@ export function renderField(field) {
   const className = `form-group ${touched && error ? 'has-danger' : ''}`;
   return (
     <div className={className}>
-      <label>{field.label}{field.required ? '*' : ''}</label>
-      { field.helptext ?
-      <AddToolTip parent={field.input.name} helptext={field.helptext} /> : ''}
+      <label>{field.label}{field.required ? '*' : ''} { field.helptext ?
+      <AddToolTip parent={field.input.name} helptext={field.helptext} /> : ''}</label>
+
       <input
         type={field.type ? field.type : "text"}
         className="form-control"
