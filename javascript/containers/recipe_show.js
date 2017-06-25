@@ -42,7 +42,6 @@ export class RecipeShow extends Component {
         return <li key={index}>{ingredient.content}</li>
       }
     );
-
   }
 
   renderIngredients() {
@@ -73,9 +72,29 @@ export class RecipeShow extends Component {
     }
   }
 
+  renderTag(tags) {
+    return tags.map(function(tag, index){
+        return <li key={index} className="tags__tag">{tag}</li>
+      }
+    );
+  }
+
+  renderTags() {
+    const recipe = this.props.recipe;
+
+    return (
+      <div>
+        <h3 className="tags__heading">Tags</h3>
+        <ul className="tags__list">
+          { this.renderTag(recipe.tags) }
+        </ul>
+      </div>
+    );
+  }
   render() {
 		const { recipe } = this.props;
     if(!recipe) return <div>Loading...</div>
+
     return (
 
       <div className="recipe">
@@ -92,6 +111,8 @@ export class RecipeShow extends Component {
         { this.renderInstructions() }
 
         { this.renderSource() }
+
+        { recipe.tags ? this.renderTags() : '' }
       </div>
     );
   }
