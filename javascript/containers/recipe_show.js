@@ -76,7 +76,6 @@ export class RecipeShow extends Component {
   render() {
 		const { recipe } = this.props;
     if(!recipe) return <div>Loading...</div>
-
     return (
 
       <div className="recipe">

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import ToolTip from 'react-portal-tooltip';
+import TagsInput from 'react-tagsinput';
+import 'react-tagsinput/react-tagsinput.css';
 import { Storage } from '../firebase-config';
 
 export function generateSlug(values) {
@@ -236,6 +238,61 @@ export function fileInput(field) {
 
       <p className="text-error">
         {(submitFailed && error)? error : ''}
+      </p>
+    </div>
+  );
+}
+
+
+class SetTags extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { tags: [] };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.data.value !== nextProps.data.value) {
+      this.setState({ tags: nextProps.data.value });
+    }
+  }
+
+  adaptTagEventToValue(delegate) {
+      return e => {
+        this.setState({ tags: e });
+        return delegate(e);
+      };
+  }
+
+  render() {
+    const inputProps = {
+       name: this.props.data.name
+    }
+
+    return (
+      <TagsInput
+        {...this.props.data}
+        onChange={this.adaptTagEventToValue(this.props.data.onChange)}
+        value={ this.state.tags }
+        inputProps={ inputProps }
+      />
+    )
+  }
+}
+
+export function renderTagsField(field) {
+  const { meta: { touched, error } } = field;
+
+  const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+
+  return (
+    <div className={className}>
+      <label>{field.label}{field.required ? '*' : ''} { field.helptext ?
+      <AddToolTip parent={field.input.name} helptext={field.helptext} /> : ''}</label>
+
+      <SetTags data={field.input} />
+
+      <p className="text-error">
+        {touched ? error : ''}
       </p>
     </div>
   );
