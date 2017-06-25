@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createRecipe } from '../actions';
 
-import { onFormSubmit, renderField, renderIngredients, renderTextField, fileInput } from '../helpers/form';
+import { onFormSubmit, renderField, renderIngredients, renderTextField, fileInput, renderTagsField } from '../helpers/form';
 
 class RecipeNew extends Component {
   constructor(props) {
@@ -71,6 +71,13 @@ class RecipeNew extends Component {
         <Field
           name="img"
           component={ fileInput }
+        />
+
+        <Field
+          label="Tags"
+          name="tags"
+          component={ renderTagsField }
+          helptext="Add tags to make the recipe easier to find. Eg. dairy-free, italian"
         />
 
 				<button type="submit" className="btn btn-primary">Submit</button>

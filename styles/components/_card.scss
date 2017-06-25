@@ -6,5 +6,11 @@
 
 .card {
     flex: 0 1 30%;
+    padding: $gutter;
+    background-color: $background-color-content;
     text-align: center;
+
+    &__title {
+      margin-top: 0;
+    }
 }

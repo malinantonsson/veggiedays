@@ -1,0 +1,11 @@
+.tags {
+  &__list {}
+
+  &__tag {
+    display: inline-block;
+    margin-right: 1em;
+    padding: .3em 1em;
+    border: 1px solid;
+    border-radius: 3px;
+  }
+}
