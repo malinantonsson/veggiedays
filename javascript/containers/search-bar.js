@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import { bindActionCreators } from 'redux';
 import { fetchRecipes } from '../actions/index';
+import Card from '../components/card';
 
 export class SearchBar extends Component {
   constructor(props) {
@@ -22,29 +23,41 @@ export class SearchBar extends Component {
 	}
 
   filterList() {
-    _.filter(this.props.recipes, function(recipe) {
+
+    const filteredList = _.filter(this.props.recipes, recipe => {
         if(!recipe.tags) return false;
-        
-        recipe.tags.map(function(tag) {
-          console.log(tag);
-        })
-      return !recipe.active;
+
+        let filteredTags = recipe.tags.filter( tag =>  {
+          return tag.toLowerCase().indexOf(this.state.term.toLowerCase()) > -1;
+        });
+
+        return filteredTags.length > 0;
     });
 
+    this.setState({ matched : filteredList });
+  }
+
+  renderRecipes() {
+    //sort by date so the latest post comes first
+		const orderedRecipes = _.orderBy(this.state.matched, ['date'], ['desc']);
+    return orderedRecipes.map((recipe) => {
+      return (
+        <Card key={recipe.date} recipe={recipe} title={recipe.title} slug={recipe.slug}/>
+      );
+    });
   }
 
   onInputChange(evt) {
     this.setState({
       term: evt.target.value
     });
+
     this.filterList();
   }
 
   onFormSubmit(evt) {
     evt.preventDefault();
 
-		//we need to go and fetch the data
-		//this.props.fetchRecipes(this.state.term);
 		this.setState({ term: '' });
   }
 
@@ -63,10 +76,9 @@ export class SearchBar extends Component {
 
         <div className="result">
           <h3>Result</h3>
-          { this.state.matched.map(function(item) {
-            {item}
-          })
-        }
+          <div className="cards latest-cards">
+            {this.renderRecipes()}
+          </div>
         </div>
       </form>
     );
