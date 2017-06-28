@@ -5,23 +5,25 @@ import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
 import { Storage } from '../firebase-config';
 
-export function generateSlug(values) {
+function generateSlug(values) {
   return values.title.toLowerCase().replace(/ /g, '-');
 }
+
+function isString(value) {
+  return toString.call(value) !== '[object String]';
+}
+
 
 export function onFormSubmit(values, isNew, post) {
 
   if(isNew) {
     values.slug = generateSlug(values);
   }
-  //const props = this.props;
+
   values.date = Date.now();
-  //values.slug = this.generateSlug(values);
 
-  //var file = state.img;
-
-  //if there is a file
-  if(values.img) {
+  //if there is a file & it is not a string
+  if((values.img) && (isString())) {
     var storageRef = Storage.ref();
 
     // Create the file metadata
