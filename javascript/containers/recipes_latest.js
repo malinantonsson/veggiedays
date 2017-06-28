@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { fetchLastThreeRecipes } from '../actions';
+import { fetchLastThreeRecipes, fetchRecipes } from '../actions';
 import Card from '../components/card';
 
 export class fetchLatestRecipes extends Component {
   //called as soon as the component shows up in the DOM
 	componentDidMount() {
-		this.props.fetchLastThreeRecipes();
+		this.props.fetchRecipes();
 	}
 
   renderRecipes() {
@@ -40,4 +40,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, { fetchLastThreeRecipes })(fetchLatestRecipes);
+export default connect(mapStateToProps, { fetchRecipes })(fetchLatestRecipes);

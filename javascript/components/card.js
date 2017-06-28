@@ -11,7 +11,7 @@ export default class Card extends Component {
           <img src={img ? img : "http://i0.wp.com/56kilo.se/wp-content/uploads/2017/05/012A3681.jpg?w=1200"} className="card__img" />
           <div className="tags__list">
             { tags ? tags.map(function(tag, i){
-              return <span className="tags__tag">{ tag }</span>
+              return <span className="tags__tag" key={i}>{ tag }</span>
             }): '' }
           </div>
         </Link>

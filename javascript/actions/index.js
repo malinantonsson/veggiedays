@@ -9,7 +9,7 @@ export const FETCH_RECIPE = 'FETCH_RECIPE';
 
 export function fetchRecipes(term) {
 	const request = axios.get(`${ROOT_URL}${EXT}`);
-
+	console.log('term');
   return {
     type: FETCH_RECIPES,
     payload: request
