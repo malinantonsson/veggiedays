@@ -124,41 +124,50 @@ export function renderField(field) {
   );
 }
 
-export function renderIngredients({ fields, meta: { touched, error } }) {
+export class renderIngredients extends Component {
+  componentWillReceiveProps(nextProps) {
+    const { fields } = nextProps;
+    if(fields.length === 0) {
+      fields.push({});
+    }
+  }
 
-  return (
-    <div>
-      <label>Ingredients</label>
-      <ul className="ingredients__form">
+  render() {
+    const { fields } = this.props;
 
-        {fields.map((ingredient, index) =>
-          <li className="ingredients__item" key={index}>
-            <Field
-              name={`${ingredient}.content`}
-              type="text"
-              component={ renderField }/>
+    return (
+      <div>
+        <label>Ingredients</label>
+        <ul className="ingredients__form">
 
-              <button
-                type="button"
-                title="Remove ingredient"
-                className="ingredients__remove"
-                onClick={() => fields.remove(index)}>-</button>
-          </li>
-        )}
-        <li>
-          {touched && error && <span>{error}</span>}
-        </li>
-      </ul>
+          {fields.map((ingredient, index) =>
+            <li className="ingredients__item" key={index}>
+              <Field
+                name={`${ingredient}.content`}
+                type="text"
+                component={ renderField }/>
 
-      <button
-        type="button"
-        onClick={() => fields.push({})}
-        className="ingredients__add">
-        Add ingredient
-      </button>
-    </div>
-  );
+                {index > 0 ? <button
+                  type="button"
+                  title="Remove ingredient"
+                  className="ingredients__remove"
+                  onClick={() => fields.remove(index)}>-</button> : ''}
+
+            </li>
+          )}
+        </ul>
+
+        <button
+          type="button"
+          onClick={() => fields.push({})}
+          className="ingredients__add">
+          Add ingredient
+        </button>
+      </div>
+    );
+  }
 }
+
 
 export function renderTextField(field) {
   const { meta: { touched, error } } = field;
@@ -177,32 +186,6 @@ export function renderTextField(field) {
   );
 }
 
-function handleImgChange(img) {
-    if(!img) return;
-
-    const imgElement = document.querySelector('[data-behaviour=display-img]');
-    const imgLabel = document.querySelector('.recipe-img__label');
-
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-        imgElement.setAttribute('src', e.target.result);
-        imgLabel.innerHTML = 'Change image';
-    }
-
-    reader.readAsDataURL(img);
-
-}
-
-function adaptFileEventToValue(delegate) {
-    let evt = e => {
-      if(e.target.files) {
-        handleImgChange(e.target.files[0]);
-      }
-      return delegate(e.target.files[0]);
-    };
-    return evt;
-}
 
 export function fileInput(field) {
   const img = field.input.value;
@@ -219,6 +202,33 @@ export function fileInput(field) {
     },
     ...props,
   } = field;
+
+  function adaptFileEventToValue(delegate) {
+      let evt = e => {
+        if(e.target.files) {
+          handleImgChange(e.target.files[0]);
+        }
+        return delegate(e.target.files[0]);
+      };
+      return evt;
+  }
+
+  function handleImgChange(img) {
+      if(!img) return;
+
+      const imgElement = document.querySelector('[data-behaviour=display-img]');
+      const imgLabel = document.querySelector('.recipe-img__label');
+
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+          imgElement.setAttribute('src', e.target.result);
+          imgLabel.innerHTML = 'Change image';
+      }
+
+      reader.readAsDataURL(img);
+
+  }
 
   return (
     <div>
