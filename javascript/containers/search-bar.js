@@ -16,19 +16,24 @@ export class SearchBar extends Component {
 
     this.onInputChange = this.onInputChange.bind(this);
 		this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.filterList = this.filterList.bind(this);
   }
 
   componentDidMount() {
 		this.props.fetchRecipes();
 	}
 
-  filterList() {
+  filterList(term) {
+    if(!term.length) {
+      this.setState({ matched : [] });
+      return;
+    }
 
     const filteredList = _.filter(this.props.recipes, recipe => {
         if(!recipe.tags) return false;
 
         let filteredTags = recipe.tags.filter( tag =>  {
-          return tag.toLowerCase().indexOf(this.state.term.toLowerCase()) > -1;
+          return tag.toLowerCase().indexOf(term.toLowerCase()) > -1;
         });
 
         return filteredTags.length > 0;
@@ -48,11 +53,9 @@ export class SearchBar extends Component {
   }
 
   onInputChange(evt) {
-    this.setState({
-      term: evt.target.value
-    });
-
-    this.filterList();
+    const term = evt.target.value;
+    this.setState({ term });
+    this.filterList(term);
   }
 
   onFormSubmit(evt) {
@@ -62,6 +65,7 @@ export class SearchBar extends Component {
   }
 
   render() {
+
     return (
       <form className="search" onSubmit={this.onFormSubmit}>
         <input
@@ -75,7 +79,7 @@ export class SearchBar extends Component {
         <button type="submit" className="search__btn">Submit</button>
 
         <div className="result">
-          <h3>Result</h3>
+          <p>You searched for { this.state.term }</p>
           <div className="cards latest-cards">
             {this.renderRecipes()}
           </div>
