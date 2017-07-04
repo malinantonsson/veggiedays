@@ -15,7 +15,6 @@ export class SearchBar extends Component {
     };
 
     this.onInputChange = this.onInputChange.bind(this);
-		this.onFormSubmit = this.onFormSubmit.bind(this);
     this.filterList = this.filterList.bind(this);
   }
 
@@ -58,16 +57,10 @@ export class SearchBar extends Component {
     this.filterList(term);
   }
 
-  onFormSubmit(evt) {
-    evt.preventDefault();
-
-		this.setState({ term: '' });
-  }
-
   render() {
 
     return (
-      <form className="search" onSubmit={this.onFormSubmit}>
+      <form className="search">
         <input
           type="text"
           className="search__field"
@@ -76,14 +69,14 @@ export class SearchBar extends Component {
 					onChange={ this.onInputChange }
         />
 
-        <button type="submit" className="search__btn">Submit</button>
-
-        <div className="result">
-          <p>You searched for { this.state.term }</p>
-          <div className="cards latest-cards">
-            {this.renderRecipes()}
+          { this.state.matched.length > 0 ?
+            <div className="search__result">
+              <p className="search__heading">You searched for <strong>{ this.state.term }</strong></p>
+              <div className="cards latest-cards">
+                {this.renderRecipes()}
+              </div>
           </div>
-        </div>
+          : '' }
       </form>
     );
   }
